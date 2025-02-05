@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Home Page</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+          th:href="@{/webjars/bootstrap-icons/font/bootstrap-icons.css}">
+    <link rel="stylesheet" href="/static/style.css"
+          th:href="@{/static/style.css}">
+    <script defer th:src="@{/webjars/bootstrap/js/bootstrap.bundle.js}"
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/home.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon/favicon-16x16.png">
+    <link rel="icon" href="/static/favicon/favicon.ico">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<main>
+    <section id="dogcarousel" class="carousel slide">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#dogcarousel" data-bs-slide-to="0" class="active" aria-current="true"
+                    aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#dogcarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#dogcarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active custom-carousel-item">
+                <img src="../static/images/d3.jpg" class="d-block w-100 custom-image" alt="Hospital">
+                    <div class="carousel-caption d-flex flex-column align-items-center">
+                        <h1 class="fw-bold">Hospital Management System</h1>
+                        <a href="#book" class="btn btn-light mt-2 shadow">Have Feedback?</a>
+                    </div>
+            </div>
+            <!-- Slide 2 -->
+            <div class="carousel-item custom-carousel-item">
+                <img src="../static/images/doctors.jpg" class="custom-image" alt="d3"/>
+                <div class="carousel-caption d-md-block">
+                    <h1 class="fw-bold">Your Health, Our Mission</h1>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#dogcarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#dogcarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </section>
+</main>
+
+    <!-- DEPARTMENT GRID -->
+    <div class="container mt-5">
+        <h2 class="text-center mb-4 fw-bold">Overview of our Departments</h2>
+        <div class="row g-3 text-center">
+            <!-- Neurology -->
+            <div class="col-md-4 col-sm-6">
+                <div class="hover-effect">
+                    <img src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fphoenixmed.arizona.edu%2Fsites%2Fdefault%2Ffiles%2Fimages%2Fbanners%2Fneurology-banner.jpg&f=1&nofb=1" class="img-fluid rounded shadow department-img" alt="Neurology">
+                </div>
+                <p class="mt-2 fw-bold">Neurology</p>
+                <p>Our most modern department with professionals from all over the world.</p>
+            </div>
+            <!-- Cardiology -->
+            <div class="col-md-4 col-sm-6">
+                <div class="hover-effect">
+                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.ajhospital.in%2Fstorage%2Ffiles%2FDept%2Fcardiology.jpg&f=1&nofb=1" class="img-fluid rounded shadow department-img" alt="Cardiology">
+                </div>
+                <p class="mt-2 fw-bold">Cardiology</p>
+                <p>We can ensure you that your heart is going to be in the right hands!</p>
+            </div>
+            <!-- Dentistry -->
+            <div class="col-md-4 col-sm-6">
+                <div class="hover-effect">
+                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.ncl.ac.uk%2Fmediav8%2Fdental%2Fimages%2Fdental-homepage-hero.jpg&f=1&nofb=1" class="img-fluid rounded shadow department-img" alt="Dentistry">
+                </div>
+                <p class="mt-2 fw-bold">Dentistry</p>
+                <p>Your smile will make the world even better after visiting our doctors!</p>
+            </div>
+            <!-- Pediatrics -->
+            <div class="col-md-4 col-sm-6">
+                <div class="hover-effect">
+                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fstorage.googleapis.com%2Ftreatspace-prod-media%2Fpracimg%2Fu-564%2Fimage_IG6hkZD.jpeg&f=1&nofb=1" class="img-fluid rounded shadow department-img" alt="Pediatrics">
+                </div>
+                <p class="mt-2 fw-bold">Pediatrics</p>
+                <p>Your kids will be happy to be treated here.</p>
+            </div>
+            <!-- Radiology -->
+            <div class="col-md-4 col-sm-6">
+                <div class="hover-effect">
+                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcollege.mayo.edu%2Fmedia%2Fmccms%2Fcontent-assets%2Facademics%2Fresidencies-and-fellowships%2Fdiagnostic-radiology-residency-minnesota%2Fdepartment-and-faculty%2Fdiag-radiol-residency-mn-faculty.jpg&f=1&nofb=1" class="img-fluid rounded shadow department-img" alt="Radiology">
+                </div>
+                <p class="mt-2 fw-bold">Radiology</p>
+                <p>Let's take a nice picture of your internal world!</p>
+            </div>
+            <!-- Surgery -->
+            <div class="col-md-4 col-sm-6">
+                <div class="hover-effect">
+                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.mayoclinic.org%2F-%2Fmedia%2Fkcms%2Fgbs%2Fpatient-consumer%2Fimages%2F2019%2F12%2F11%2F17%2F19%2Fsurgery-3113314-0117-8col.jpg&f=1&nofb=1" class="img-fluid rounded shadow department-img" alt="Surgery">
+                </div>
+                <p class="mt-2 fw-bold">Surgery</p>
+                <p>Skilled surgeons equipped to handle any situation!</p>
+            </div>
+        </div>
+    </div>
+    <section id="faq" class="mx-4 my-4">
+        <h2 class="text-center">FAQ</h2>
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        How can I add a new patient?
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <strong>It's very simple!</strong> Just follow the navigation bar on the top of the page.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        How can I call somebody to help me?
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <strong>No problem!</strong> Just leave us your number or email under this question, and our specialists will contact you!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="book" class="mx-4 my-4">
+        <h2 class="text-center">Leave us feedback!</h2>
+        <form action="#">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-floating">
+                        <input type="text" id="name" class="form-control" placeholder="">
+                        <label for="name">Your email</label>
+                    </div>
+                </div>
+                <div class="col-sm-6 mt-2 mt-sm-0">
+                    <div class="form-floating">
+                        <input type="email" id="email" class="form-control" placeholder="">
+                        <label for="email">Your feedback</label>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-2 d-flex justify-content-end">
+                <button type="button" class="btn btn-primary">Send</button>
+            </div>
+        </form>
+    </section>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

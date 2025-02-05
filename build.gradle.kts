@@ -21,9 +21,13 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
     runtimeOnly("org.postgresql:postgresql")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    implementation("org.webjars.npm:bootstrap-icons:1.11.1")
+    implementation("org.webjars:bootstrap:5.3.2")
+    implementation("org.webjars:webjars-locator-core:0.48")
 }
 
 tasks.withType<Test> {

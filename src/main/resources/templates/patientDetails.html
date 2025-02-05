@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Details</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+          th:href="@{/webjars/bootstrap-icons/font/bootstrap-icons.css}">
+    <script defer th:src="@{/webjars/bootstrap/js/bootstrap.bundle.js}"
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" th:href="@{/static/style.css}" href="/static/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <!-- favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon/favicon-16x16.png">
+    <link rel="icon" href="/static/favicon/favicon.ico">
+
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container mt-4">
+    <h1 class="mb-4">Patient Details</h1>
+
+    <div class="card mb-4">
+        <div class="row g-0">
+            <div class="col-md-4">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${patient.firstName} + ' ' + ${patient.lastName}"></h5>
+                    <p class="card-text"><strong>Patient ID:</strong> <span th:text="${patient.patientId}"></span></p>
+                    <p class="card-text"><strong>Age:</strong> <span th:text="${patient.age}"></span></p>
+                    <p class="card-text"><strong>Gender:</strong> <span th:text="${patient.gender}"></span></p>
+                    <p class="card-text"><strong>Admission Date:</strong> <span th:text="${patient.admissionDate}"></span></p>
+                    <p class="card-text"><strong>Billing Amount:</strong> <span th:text="${patient.billingAmount}"></span></p>
+                    <h3>Assigned Doctors</h3>
+                    <ul>
+                        <li th:each="doctor : ${assignedDoctors}">
+                            <a th:href="@{/doctors/{licenseNumber}(licenseNumber=${doctor.licenseNumber})}"
+                               th:text="${doctor.firstName} + ' ' + ${doctor.lastName}"></a>
+                        </li>
+                    </ul>
+                    <a th:href="@{/patients}" class="btn btn-primary">Back to Patients</a>
+                    <form th:action="@{/patients/delete/{patientId}(patientId=${patient.patientId})}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-danger btn-sm" style="font-size: 14px; padding: 6px 12px; border-radius: 5px;">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<form th:action="@{/patients/{patientId}/assign-doctor(patientId=${patient.patientId})}" method="post">
+    <select name="doctorId" class="form-select">
+        <option th:each="doctor : ${allDoctors}" th:value="${doctor.licenseNumber}"
+                th:text="${doctor.firstName} + ' ' + ${doctor.lastName}"></option>
+    </select>
+    <button type="submit" class="btn btn-primary mt-2">Assign Doctor</button>
+</form>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

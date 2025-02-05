@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Patient</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+          th:href="@{/webjars/bootstrap-icons/font/bootstrap-icons.css}">
+    <link rel="stylesheet" th:href="@{/static/style.css}" href="/static/style.css">
+    <script defer th:src="@{/webjars/bootstrap/js/bootstrap.bundle.js}"
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="/static/form.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="/static/js/formValid.js" defer></script>
+
+    <!-- favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon/favicon-16x16.png">
+    <link rel="icon" href="/static/favicon/favicon.ico">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container-fluid px-1 py-5 mx-auto">
+    <div class="row d-flex justify-content-center">
+        <div class="col-xl-7 col-lg-8 col-md-9 col-11 text-center">
+            <div class="card">
+                <h5 class="text-center mb-4">Add Patient information</h5>
+                <form th:action="@{/patients/add}" th:object="${patientForm}" method="post" class="form-card needs-validation" novalidate>
+                    <div class="row justify-content-between text-left">
+                        <div class="form-group col-sm-6 flex-column d-flex">
+                            <label class="form-control-label px-3" for="firstName">First Name<span class="text-danger"> *</span></label>
+                            <input type="text" th:field="*{firstName}" id="firstName" class="form-control" placeholder="Enter first name" required />
+                            <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
+                            <div class="invalid-feedback">First name is required.</div>
+                        </div>
+                        <div class="form-group col-sm-6 flex-column d-flex">
+                            <label class="form-control-label px-3" for="lastName">Last Name<span class="text-danger"> *</span></label>
+                            <input type="text" th:field="*{lastName}" id="lastName" class="form-control" placeholder="Enter last name" required />
+                            <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
+                            <div class="invalid-feedback">Last name is required.</div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-between text-left">
+                        <div class="form-group col-sm-6 flex-column d-flex">
+                            <label class="form-control-label px-3" for="patient_id">Patient ID: <span class="text-danger"> *</span></label>
+                            <input type="text" th:field="*{patientId}" id="patient_id" class="form-control" placeholder="Enter patient ID" required pattern="^{1}[0-9]{4}$" />
+                            <div th:if="${#fields.hasErrors('patientId')}" th:errors="*{patientId}"></div>
+                            <div class="invalid-feedback">Patient ID must follow the format 00000.</div>
+                        </div>
+                        <div class="form-group col-sm-6 flex-column d-flex">
+                            <label class="form-control-label px-3" for="age">Age<span class="text-danger"> *</span></label>
+                            <input type="number" th:field="*{age}" id="age" class="form-control" placeholder="Enter age" required min="0" />
+                            <div th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></div>
+                            <div class="invalid-feedback">Please enter a valid age.</div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-between text-left">
+                        <div class="form-group col-sm-6 flex-column d-flex">
+                            <label class="form-control-label px-3" for="gender">Gender<span class="text-danger"> *</span></label>
+                            <select th:field="*{gender}" id="gender" class="form-select" required>
+                                <option value="" disabled selected>Select Gender</option>
+                                <option th:each="g : ${T(org.example.programming5project.domain.Gender).values()}" th:value="${g}" th:text="${g.name()}"></option>
+                            </select>
+                            <div class="invalid-feedback">Please select a gender.</div>
+                        </div>
+                        <div class="form-group col-sm-6 flex-column d-flex">
+                            <label class="form-control-label px-3" for="admissionDate">Admission Date<span class="text-danger"> *</span></label>
+                            <input type="date" th:field="*{admissionDate}" id="admissionDate" class="form-control" required />
+                            <div th:if="${#fields.hasErrors('admissionDate')}" th:errors="*{admissionDate}"></div>
+                            <div class="invalid-feedback">Admission date is required.</div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-between text-left">
+                        <div class="form-group col-12 flex-column d-flex">
+                            <label class="form-control-label px-3" for="billing_amount">Billing Amount<span class="text-danger"> *</span></label>
+                            <input type="number" th:field="*{billingAmount}" id="billing_amount" class="form-control" placeholder="Enter billing amount" required min="0" />
+                            <div th:if="${#fields.hasErrors('billingAmount')}" th:errors="*{billingAmount}"></div>
+                            <div class="invalid-feedback">Billing amount is required.</div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-end">
+                        <div class="form-group col-sm-6">
+                            <button type="submit" class="btn btn-primary btn-block">Add Patient</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

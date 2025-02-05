@@ -1,0 +1,30 @@
+body {
+    color: #0e0909;
+    overflow-x: hidden;
+    height: 100%;
+    background-image: url("../static/images/doctors.jpg");
+    background-repeat: no-repeat;
+    background-size: cover; /* Ensures the image covers the container while keeping its aspect ratio */
+    background-position: center; /* Centers the image */
+    font-family: 'Arial', sans-serif;
+    background-attachment: fixed; /* Optional: Keeps the background image fixed while scrolling */
+}
+
+.card {
+    padding: 30px 40px;
+    margin-top: 60px;
+    margin-bottom: 60px;
+    border: none !important;
+    box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.2);
+    max-width: 100%; /* Ensures the card doesn't exceed the screen width */
+}
+
+@media (max-width: 768px) {
+    body {
+        background-size: contain; /* Adjusts the background image for smaller screens */
+        background-position: top center; /* Moves the image position for better display on mobile */
+    }
+}
+
+
+

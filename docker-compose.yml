@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+    postgres_hospitalManagement_db:
+        image: postgres:17.2-alpine
+        restart: always
+        environment:
+            POSTGRES_DB: 'hospitalManagement'
+            POSTGRES_USER: 'spring'
+            POSTGRES_PASSWORD: 'spring'
+        ports:
+            - '5050:5432'
+        volumes:
+            - db-data:/var/lib/postgresql/data
+volumes:
+    db-data:
