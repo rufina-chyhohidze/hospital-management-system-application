@@ -36,7 +36,6 @@ public class PatientController {
     @GetMapping
     public String getAllPatients(Model model, HttpSession session) {
         logger.info("Fetching all patients...");
-       logVisit(session,"Getting all patients...");
         List<Patient> patients = patientService.getAllPatients();
         model.addAttribute("patients", patients);
         return "patients"; // returns the view called patients.html
@@ -46,7 +45,6 @@ public class PatientController {
     public String addPatientForm(Model model,HttpSession session) {
         model.addAttribute("patientForm", new PatientForm());
         logger.info("Processing patient's form...");
-        logVisit(session,"Inside the patient's form...");
         return "addpatient"; // returns the form to add a patient
     }
 
@@ -60,7 +58,6 @@ public class PatientController {
         List<Doctor> doctors = doctorService.getAllDoctors();
         List<Doctor> assignedDoctors = patientService.getDoctorsForPatient(patientId);
 
-        logVisit(session, "Getting the details for patient with ID: " + patientId + "...");
         model.addAttribute("patient", patient);
         model.addAttribute("allDoctors", doctors);
         model.addAttribute("assignedDoctors", assignedDoctors);
@@ -78,7 +75,6 @@ public class PatientController {
         logger.info("Deleting patient: " + patientId + "...");
         patientService.removePatient(patientId);
         logger.info("Patient deleted: " + patientId + "!");
-        logVisit(session, "Patient with ID: " + patientId + " deleted.");
         return "redirect:/patients";
     }
 
@@ -93,7 +89,6 @@ public class PatientController {
     public String handlePatientNotFoundException(PatientNotFoundException ex, Model model, HttpSession session) {
         logger.error("Exception: {}", ex.getMessage());
         model.addAttribute("errorMessage", ex.getMessage());
-        logVisit(session, "Error: " + ex.getMessage());
         return "patientError"; // Replace with your generic error page or create a specific error page for patients
     }
 
@@ -107,7 +102,6 @@ public class PatientController {
             // Fetch doctors again in case of form errors
             List<Doctor> doctors = doctorService.getAllDoctors();
             model.addAttribute("doctors", doctors);
-            logVisit(session,"Inside the patient's form...");
             return "addpatient";
         }
 
@@ -131,7 +125,6 @@ public class PatientController {
 
         patientService.addPatient(patient);
         logger.info("Patient added successfully: {}", patient);
-        logVisit(session, "Added Patient with ID: " + patientForm.toString());
         return "redirect:/patients";
     }
         @PostMapping("/{patientId}/assign-doctor")
@@ -143,7 +136,6 @@ public class PatientController {
             if (doctorId == null || doctorId.isEmpty()) {
                 throw new IllegalArgumentException("Doctor ID is empty");
             }
-            logVisit(session,"Assigned doctor to Patient with ID: " + patientId);
             patientService.assignDoctorToPatient(patientId, Integer.parseInt(doctorId));
             return "redirect:/patients/" + patientId;
         }
@@ -158,7 +150,6 @@ public class PatientController {
             if (patients.isEmpty()) {
                 model.addAttribute("error", "No patients found for the given criteria.");
                 logger.warn("No patients found for name: {} and admissionDate: {}", name, admissionDate);
-                logVisit(session, "No patients found for name: " + name);
                 return "patientError"; // Redirects to an error page (e.g., error.html)
             }
 
@@ -166,15 +157,5 @@ public class PatientController {
             return "patients"; // Reuse the patients page to display the results
         }
 
-    public void logVisit(HttpSession session, String pageName) {
-        List<Map<String, String>> visitHistory = (List<Map<String, String>>) session.getAttribute("visitHistory");
-        if (visitHistory == null) {
-            visitHistory = new ArrayList<>();
-            session.setAttribute("visitHistory", visitHistory);
-        }
-        Map<String, String> visitEntry = new HashMap<>();
-        visitEntry.put("page", pageName);
-        visitEntry.put("timestamp", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-        visitHistory.add(visitEntry);
-    }
+
 }

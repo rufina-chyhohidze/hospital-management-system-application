@@ -17,19 +17,6 @@ public class HomeController {
     public String showHomePage(HttpSession session) {
         logger.info("Showing home page");
         logger.info("Current user: " + session.getAttribute("user"));
-        logVisit(session,"At the home page at the moment....");
         return "home";
     }
-    public void logVisit(HttpSession session, String pageName) {
-        List<Map<String, String>> visitHistory = (List<Map<String, String>>) session.getAttribute("visitHistory");
-        if (visitHistory == null) {
-            visitHistory = new ArrayList<>();
-            session.setAttribute("visitHistory", visitHistory);
-        }
-        Map<String, String> visitEntry = new HashMap<>();
-        visitEntry.put("page", pageName);
-        visitEntry.put("timestamp", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-        visitHistory.add(visitEntry);
-    }
-//
 }

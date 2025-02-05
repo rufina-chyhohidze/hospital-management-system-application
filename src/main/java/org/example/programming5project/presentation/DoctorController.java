@@ -41,7 +41,6 @@ public class DoctorController {
     @GetMapping
     public String getAllDoctors(Model model, HttpSession session) {
         logger.info("Fetching all doctors...");
-        logVisit(session,"Fetching all doctors...");
         model.addAttribute("doctors", doctorService.getAllDoctors());
         return "doctors";
     }
@@ -49,7 +48,6 @@ public class DoctorController {
     @GetMapping("/add")
     public String showAddDoctorForm(Model model, HttpSession session) {
         logger.info("Processing doctor's form...");
-        logVisit(session,"Visited Doctor's Form");
         model.addAttribute("doctorForm", new DoctorForm());
         return "adddoctor"; //
     }
@@ -59,13 +57,11 @@ public class DoctorController {
         Doctor doctor = doctorService.findDoctorByLicenseNumber(doctorId);
         if (doctor == null) {
             logger.error("Doctor with ID {} not found", doctorId);
-            logVisit(session,"Doctor with ID " + doctorId + " not found");
             throw new DoctorNotFoundException("Doctor with ID " + doctorId + " not found.");
         }
 
         List<Patient> patients = patientService.getPatientsForDoctor(doctorId);
         List<Patient> allPatients = patientService.getAllPatients();
-        logVisit(session, "Getting details for Doctor with ID: " + doctorId);
 
         model.addAttribute("doctor", doctor);
         model.addAttribute("assignedPatients", patients);
@@ -83,7 +79,6 @@ public class DoctorController {
     public String handleDoctorNotFoundException(DoctorNotFoundException ex, Model model, HttpSession session) {
         logger.error("Exception: {}", ex.getMessage());
         model.addAttribute("errorMessage", ex.getMessage());
-        logVisit(session, "Error: " + ex.getMessage());
         return "error"; // Replace with the name of your error view
     }
 
@@ -106,7 +101,6 @@ public class DoctorController {
 
         doctorService.addDoctor(doctor);
         logger.info("Successfully added a new doctor: {}", doctorForm.toString());
-        logVisit(session,"Added Doctor with ID: " +doctorForm.toString());
         return "redirect:/doctors";
     }
 
@@ -117,7 +111,6 @@ public class DoctorController {
             doctorService.removeDoctor(licenseNumber);
             redirectAttributes.addFlashAttribute("successMessage", "Doctor deleted successfully!");
             logger.info("Successfully deleted doctor: "+licenseNumber + "!");
-            logVisit(session,"Doctor with ID: "+ licenseNumber + " deleted successfully!");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Error deleting doctor: " + e.getMessage());
         }
@@ -127,8 +120,6 @@ public class DoctorController {
     @PostMapping("/{doctorId}/assign-patient")
     public String assignPatientToDoctor(@PathVariable int doctorId, @RequestParam String patientId,HttpSession session) {
         doctorService.assignPatientToDoctor(doctorId, patientId);
-        logVisit(session,"Doctor assignment session...");
-        logVisit(session,"Assigned patient to Doctor with ID: "+ doctorId);
         return "redirect:/doctors/" + doctorId;
     }
 
@@ -138,33 +129,16 @@ public class DoctorController {
         Doctor doctor = doctorService.findDoctorByLicenseNumber(licenseNumber);
         if (doctor == null) {
             model.addAttribute("errorMessage", "No doctor found with license number " + licenseNumber);
-            logVisit(session, "Failed to find Doctor with License Number: " + licenseNumber);
             return "error"; // Or another error page
         }
         List<Patient> patients = patientService.getPatientsForDoctor(licenseNumber);
         List<Patient> allPatients = patientService.getAllPatients();
 
-        logVisit(session, "Searched Doctor with License Number: " + licenseNumber);
         model.addAttribute("doctor", doctor);
         model.addAttribute("assignedPatients", patients);
         model.addAttribute("allPatients", allPatients);
 
         return "doctorDetails";
     }
-    /**
-     * method to log the visit
-     * @param session
-     * @param pageName
-     */
-    public void logVisit(HttpSession session, String pageName) {
-        List<Map<String, String>> visitHistory = (List<Map<String, String>>) session.getAttribute("visitHistory");
-        if (visitHistory == null) {
-            visitHistory = new ArrayList<>();
-            session.setAttribute("visitHistory", visitHistory);
-        }
-        Map<String, String> visitEntry = new HashMap<>();
-        visitEntry.put("page", pageName);
-        visitEntry.put("timestamp", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-        visitHistory.add(visitEntry);
-    }
+
 }
