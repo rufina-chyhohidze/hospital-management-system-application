@@ -1,8 +1,11 @@
 package org.example.programming5project.service;
 
 import org.example.programming5project.domain.Doctor;
+import org.example.programming5project.domain.MedicalRecord;
 import org.example.programming5project.domain.Patient;
+import org.example.programming5project.exceptions.PatientNotFoundException;
 import org.example.programming5project.repository.DoctorJpaDataRepository;
+import org.example.programming5project.repository.MedicalRecordRepository;
 import org.example.programming5project.repository.PatientJpaDataRepository;
 import org.example.programming5project.service.PatientService;
 import org.slf4j.Logger;
@@ -18,17 +21,19 @@ import java.util.List;
  * Uses JpaDataRepositories
  */
 @Service
-        //("patientJpaDataServiceImpl")
 @Profile("jpa")
+@Transactional
 public class PatientJpaDataServiceImpl implements PatientService {
     private Logger logger = LoggerFactory.getLogger(PatientJpaDataServiceImpl.class);
 
     private final PatientJpaDataRepository patientRepository;
     private final DoctorJpaDataRepository doctorRepository;
+    private final MedicalRecordRepository medicalRecordRepository;
 
-    public PatientJpaDataServiceImpl(PatientJpaDataRepository patientRepository, DoctorJpaDataRepository doctorRepository) {
+    public PatientJpaDataServiceImpl(PatientJpaDataRepository patientRepository, DoctorJpaDataRepository doctorRepository, MedicalRecordRepository medicalRecordRepository) {
         this.patientRepository = patientRepository;
         this.doctorRepository = doctorRepository;
+        this.medicalRecordRepository = medicalRecordRepository;
     }
 
 
@@ -43,9 +48,12 @@ public class PatientJpaDataServiceImpl implements PatientService {
     }
 
     @Override
+    @Transactional // Defines Transaction Boundary
     public Patient findPatientById(String patientId) {
-        return patientRepository.findById(patientId).orElse(null);
+        return patientRepository.findPatientWithMedicalRecords(patientId)
+                .orElseThrow(() -> new PatientNotFoundException("Patient with ID " + patientId + " not found"));
     }
+
 
     @Override
     public void addPatient(Patient patient) {
@@ -55,34 +63,35 @@ public class PatientJpaDataServiceImpl implements PatientService {
     @Override
     @Transactional
     public void removePatient(String patientId) {
-        Patient patient = patientRepository.findById(patientId)
-                .orElseThrow(() -> new RuntimeException("Patient not found"));
-
-        // Break associations
-        for (Doctor doctor : patient.getDoctors()) {
-            doctor.getPatients().remove(patient);
-            doctorRepository.save(doctor); // Save the doctor after modification
-        }
-        logger.info("Patient " + patientId + " removed");
+        Patient patient = findPatientById(patientId);
+        medicalRecordRepository.deleteByPatient(patient);
         patientRepository.delete(patient);
+        logger.info("Patient {} removed", patientId);
     }
+
 
     @Override
     @Transactional
     public void assignDoctorToPatient(String patientId, int doctorId) {
-        Patient patient = patientRepository.findById(patientId).orElseThrow(() -> new RuntimeException("Patient not found"));
-        Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new RuntimeException("Doctor not found"));
+        Patient patient = patientRepository.findById(patientId)
+                .orElseThrow(() -> new RuntimeException("Patient not found"));
+        Doctor doctor = doctorRepository.findDoctorByLicenseNumber(doctorId)
+                .orElseThrow(() -> new RuntimeException("Doctor not found"));
 
-        // Update both sides of the relationship
-        patient.getDoctors().add(doctor);
-        doctor.getPatients().add(patient);
+        boolean recordExists = patient.getMedicalRecords().stream()
+                .anyMatch(mr -> mr.getDoctor().equals(doctor));
 
-        // Save the owning side (Doctor)
-        doctorRepository.save(doctor);
-        logger.info("Doctor " + doctorId + " assigned to patient " + patientId);
+        if (!recordExists) {
+            MedicalRecord record = new MedicalRecord(doctor, patient);
+            medicalRecordRepository.save(record);
+            logger.info("Doctor {} assigned to patient {}", doctorId, patientId);
+        } else {
+            logger.warn("Doctor {} is already assigned to patient {}", doctorId, patientId);
+        }
     }
 
     @Override
+    @Transactional(readOnly = true)//LAZY FETCH
     public List<Patient> getPatientsForDoctor(int doctorId) {
         return patientRepository.findPatientsForDoctor(doctorId);
     }
@@ -90,6 +99,13 @@ public class PatientJpaDataServiceImpl implements PatientService {
     @Override
     public List<Doctor> getDoctorsForPatient(String patientId) {
         return doctorRepository.findDoctorsForPatient(patientId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Patient findPatientWithMedicalRecords(String patientId) {
+        return patientRepository.findPatientWithMedicalRecords(patientId)
+                .orElseThrow(() -> new PatientNotFoundException("Patient with ID " + patientId + " not found"));
     }
 
 }

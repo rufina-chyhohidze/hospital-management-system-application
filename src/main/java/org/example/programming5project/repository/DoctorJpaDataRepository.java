@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * uses JpaRepositories with additional query methods.
@@ -18,9 +19,19 @@ import java.util.List;
 public interface DoctorJpaDataRepository extends JpaRepository<Doctor, Integer> {
     List<Doctor> findByDepartment(Department department);
 
-    @Query("SELECT d FROM Doctor d JOIN d.patients p WHERE p.patientId = :patientId")
+    @Query("""
+    SELECT d FROM Doctor d
+    LEFT JOIN FETCH d.medicalRecords mr
+    LEFT JOIN FETCH mr.patient
+    WHERE mr.patient.patientId = :patientId
+    """)
     List<Doctor> findDoctorsForPatient(@Param("patientId") String patientId);
 
-    @Query("SELECT d FROM Doctor d WHERE d.licenseNumber = :licenseNumber")
-    Doctor findDoctorByLicenseNumber(@Param("licenseNumber") int licenseNumber);
+    @Query("""
+    SELECT d FROM Doctor d
+    LEFT JOIN FETCH d.medicalRecords mr
+    LEFT JOIN FETCH mr.patient
+    WHERE d.licenseNumber = :licenseNumber
+    """)
+    Optional<Doctor> findDoctorByLicenseNumber(@Param("licenseNumber") int licenseNumber);
 }

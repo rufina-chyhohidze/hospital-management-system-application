@@ -1,9 +1,6 @@
 package org.example.programming5project.presentation;
 
-import org.example.programming5project.domain.Department;
-import org.example.programming5project.domain.Doctor;
-import org.example.programming5project.domain.Gender;
-import org.example.programming5project.domain.Patient;
+import org.example.programming5project.domain.*;
 import org.example.programming5project.exceptions.DoctorNotFoundException;
 import org.example.programming5project.viewmodels.DoctorForm;
 import org.example.programming5project.service.DoctorService;
@@ -17,8 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -53,7 +48,7 @@ public class DoctorController {
     }
 
     @GetMapping("/{doctorId}")
-    public String getDoctorDetails(@PathVariable int doctorId, Model model, HttpSession session) {
+    public String getDoctorDetails(@PathVariable int doctorId, Model model) {
         Doctor doctor = doctorService.findDoctorByLicenseNumber(doctorId);
         if (doctor == null) {
             logger.error("Doctor with ID {} not found", doctorId);
@@ -63,9 +58,14 @@ public class DoctorController {
         List<Patient> patients = patientService.getPatientsForDoctor(doctorId);
         List<Patient> allPatients = patientService.getAllPatients();
 
+        // medical records explicitly
+        List<MedicalRecord> medicalRecords = doctor.getMedicalRecords();
+
         model.addAttribute("doctor", doctor);
         model.addAttribute("assignedPatients", patients);
         model.addAttribute("allPatients", allPatients);
+        model.addAttribute("medicalRecords", medicalRecords); // Include medical records
+
         return "doctorDetails";
     }
     /**
@@ -79,7 +79,7 @@ public class DoctorController {
     public String handleDoctorNotFoundException(DoctorNotFoundException ex, Model model, HttpSession session) {
         logger.error("Exception: {}", ex.getMessage());
         model.addAttribute("errorMessage", ex.getMessage());
-        return "error"; // Replace with the name of your error view
+        return "error";
     }
 
 
@@ -118,18 +118,18 @@ public class DoctorController {
     }
 
     @PostMapping("/{doctorId}/assign-patient")
-    public String assignPatientToDoctor(@PathVariable int doctorId, @RequestParam String patientId,HttpSession session) {
+    public String assignPatientToDoctor(@PathVariable int doctorId, @RequestParam String patientId) {
         doctorService.assignPatientToDoctor(doctorId, patientId);
         return "redirect:/doctors/" + doctorId;
     }
 
     @GetMapping("/search")
-    public String searchDoctorByLicenseNumber(@RequestParam("licenseNumber") int licenseNumber, Model model, HttpSession session) {
+    public String searchDoctorByLicenseNumber(@RequestParam("licenseNumber") int licenseNumber, Model model) {
         // Fetch the doctor
         Doctor doctor = doctorService.findDoctorByLicenseNumber(licenseNumber);
         if (doctor == null) {
             model.addAttribute("errorMessage", "No doctor found with license number " + licenseNumber);
-            return "error"; // Or another error page
+            return "error";
         }
         List<Patient> patients = patientService.getPatientsForDoctor(licenseNumber);
         List<Patient> allPatients = patientService.getAllPatients();

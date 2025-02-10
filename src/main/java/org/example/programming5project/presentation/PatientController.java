@@ -2,6 +2,7 @@ package org.example.programming5project.presentation;
 
 import org.example.programming5project.domain.Doctor;
 import org.example.programming5project.domain.Gender;
+import org.example.programming5project.domain.MedicalRecord;
 import org.example.programming5project.domain.Patient;
 import org.example.programming5project.exceptions.PatientNotFoundException;
 import org.example.programming5project.viewmodels.PatientForm;
@@ -16,8 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -49,18 +48,23 @@ public class PatientController {
     }
 
     @GetMapping("/{patientId}")
-    public String getPatientDetails(@PathVariable String patientId, Model model, HttpSession session) {
-        Patient patient = patientService.findPatientById(patientId);
+    public String getPatientDetails(@PathVariable String patientId, Model model) {
+        // patient with medical records
+        Patient patient = patientService.findPatientWithMedicalRecords(patientId);
         if (patient == null) {
             logger.error("Patient with ID {} not found", patientId);
             throw new PatientNotFoundException("Patient with ID " + patientId + " not found.");
         }
+
         List<Doctor> doctors = doctorService.getAllDoctors();
         List<Doctor> assignedDoctors = patientService.getDoctorsForPatient(patientId);
+        List<MedicalRecord> medicalRecords = patient.getMedicalRecords(); // Fetch medical records
 
         model.addAttribute("patient", patient);
         model.addAttribute("allDoctors", doctors);
         model.addAttribute("assignedDoctors", assignedDoctors);
+        model.addAttribute("medicalRecords", medicalRecords); // Pass medical records
+
         return "patientDetails";
     }
 
@@ -82,21 +86,19 @@ public class PatientController {
      * handles patientNotFoundException
      * @param ex
      * @param model
-     * @param session
      * @return
      */
     @ExceptionHandler(PatientNotFoundException.class)
-    public String handlePatientNotFoundException(PatientNotFoundException ex, Model model, HttpSession session) {
+    public String handlePatientNotFoundException(PatientNotFoundException ex, Model model) {
         logger.error("Exception: {}", ex.getMessage());
         model.addAttribute("errorMessage", ex.getMessage());
-        return "patientError"; // Replace with your generic error page or create a specific error page for patients
+        return "patientError";
     }
 
     @PostMapping("/add")
     public String addPatient(@ModelAttribute("patientForm") @Valid PatientForm patientForm,
                              BindingResult bindingResult,
-                             Model model,
-                             HttpSession session) {
+                             Model model) {
         if (bindingResult.hasErrors()) {
             logger.warn("Validation errors occurred: {}", bindingResult.getAllErrors());
             // Fetch doctors again in case of form errors
@@ -114,47 +116,44 @@ public class PatientController {
         patient.setGender(Gender.valueOf(patientForm.getGender().toUpperCase()));
         patient.setAdmissionDate(patientForm.getAdmissionDate());
         patient.setBillingAmount(patientForm.getBillingAmount());
-
-        // Assign patient to a doctor
-        if (patientForm.getDoctorId() != null) {
-            Doctor assignedDoctor = doctorService.findDoctorByLicenseNumber(patientForm.getDoctorId());
-            if (assignedDoctor != null) {
-                patient.getDoctors().add(assignedDoctor);
-            }
-        }
-
         patientService.addPatient(patient);
         logger.info("Patient added successfully: {}", patient);
         return "redirect:/patients";
     }
-        @PostMapping("/{patientId}/assign-doctor")
-        public String assignDoctorToPatient(@PathVariable String patientId,
-                                            @RequestParam String doctorId,HttpSession session) {
-            logger.info("Received Patient ID: " + patientId);
-            logger.info("Received Doctor ID: " + doctorId);
 
-            if (doctorId == null || doctorId.isEmpty()) {
-                throw new IllegalArgumentException("Doctor ID is empty");
-            }
-            patientService.assignDoctorToPatient(patientId, Integer.parseInt(doctorId));
-            return "redirect:/patients/" + patientId;
+    @PostMapping("/{patientId}/assign-doctor")
+    public String assignDoctorToPatient(@PathVariable String patientId, @RequestParam String doctorId) {
+        logger.info("Assigning doctor {} to patient {}", doctorId, patientId);
+        if (doctorId == null || doctorId.isEmpty()) {
+            throw new IllegalArgumentException("Doctor ID is empty");
         }
+        patientService.assignDoctorToPatient(patientId, Integer.parseInt(doctorId));
+        return "redirect:/patients/" + patientId;
+    }
 
         //to be able to search for a patient by name or admission date.
         @GetMapping("/search")
-        public String searchPatients(@RequestParam(required = false) String name,
-                                     @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate admissionDate,
-                                     Model model,HttpSession session) {
-            List<Patient> patients = patientService.getPatientsByNameOrAdmissionDate(name, admissionDate);
+        public String searchPatients(
+                @RequestParam(required = false) String name,
+                @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate admissionDate,
+                Model model) {
+
+            logger.info("Searching for patients - Name: {}, Admission Date: {}", name, admissionDate);
+
+            if (admissionDate != null) {
+                logger.info("Admission Date Type: {}", admissionDate.getClass().getName());
+            } else {
+                logger.info("Admission Date is NULL");
+            }
+            //service method
+            List<Patient> patients = patientService.getPatientsByNameOrAdmissionDate(name.isEmpty()?"name": name, admissionDate);
 
             if (patients.isEmpty()) {
                 model.addAttribute("error", "No patients found for the given criteria.");
-                logger.warn("No patients found for name: {} and admissionDate: {}", name, admissionDate);
-                return "patientError"; // Redirects to an error page (e.g., error.html)
+                logger.warn("No patients found for Name: {} and Admission Date: {}", name, admissionDate);
             }
-
             model.addAttribute("patients", patients);
-            return "patients"; // Reuse the patients page to display the results
+            return "patients";
         }
 
 

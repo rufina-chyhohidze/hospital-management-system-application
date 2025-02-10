@@ -3,9 +3,7 @@ package org.example.programming5project.domain;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Doctor (Many-to-Many with Patient)
@@ -34,13 +32,11 @@ public class Doctor {
     private Gender gender;
 
     // Many-to-Many relationship with Patient
-    @ManyToMany( cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.REFRESH, CascadeType.MERGE})
-    @JoinTable(
-            name = "doctor_patient",
-            joinColumns = @JoinColumn(name = "license_number"),
-            inverseJoinColumns = @JoinColumn(name = "patient_id")
-    )
-    private Set<Patient> patients = new HashSet<>();
+   // @ManyToMany( cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.REFRESH, CascadeType.MERGE})
+
+    @OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY)
+    private List<MedicalRecord> medicalRecords = new ArrayList<>();
+   // private Set<Patient> patients = new HashSet<>();
 
     // Many-to-One relationship with Hospital
     @ManyToOne(fetch = FetchType.LAZY)
@@ -72,9 +68,14 @@ public class Doctor {
         this.gender = gender;
     }
 
-    public void setPatients(Set<Patient> patients) {
-        this.patients = patients;
+    public List<MedicalRecord> getMedicalRecords() {
+        return medicalRecords;
     }
+
+    public void setMedicalRecords(List<MedicalRecord> medicalRecords) {
+        this.medicalRecords = medicalRecords;
+    }
+
 
     public Doctor(String firstName, String lastName, Department department, int licenseNumber, double salary, LocalDate hireDate, Gender gender) {
         this.firstName = firstName;
@@ -84,7 +85,7 @@ public class Doctor {
         this.salary = salary;
         this.hireDate = hireDate;
         this.gender = gender;
-        this.patients = new HashSet<>();
+       // this.patients = new HashSet<>();
     }
 
     public Doctor() {
@@ -97,7 +98,7 @@ public class Doctor {
         this.lastName = lastName;
         this.licenseNumber = licenseNumber;
         this.department = department;
-        this.patients = new HashSet<>(); //for patient initialisation
+       // this.patients = new HashSet<>(); //for patient initialisation
     }
 
     // Getters and Setters
@@ -141,38 +142,35 @@ public class Doctor {
         this.hospital = hospital;
     }
 
-    public Set<Patient> getPatients() {
-        return patients; // Return a copy to maintain encapsulation
-    }
-
-    // Many-to-Many Relationship Methods
-
-    /**
-     * static method to add a patient to the doctor's list
-     * for usage in DataFACTORY
-     * @param patient The Patient to be added
-     */
-    public void addPatient(Patient patient) {
-        if (patient == null) {
-            throw new IllegalArgumentException("Patient cannot be null.");
-        }
-        if (!patients.contains(patient)) {
-            patients.add(patient);
-            patient.addDoctor(this); // bidirectional addition
-        }
-    }
-
-    /**
-     * static method to remove a patient from the doctor's list
-     * to use in DataFactory
-     * @param patient The Patient to be removed
-     */
-    public void removePatient(Patient patient) {
-        if (patients.contains(patient)) {
-            patients.remove(patient);
-            patient.removeDoctor(this); // bidirectional removal
-        }
-    }
+//
+//    // Many-to-Many Relationship Methods
+//
+//    /**
+//     * static method to add a patient to the doctor's list
+//     * for usage in DataFACTORY
+//     * @param patient The Patient to be added
+//     */
+//    public void addPatient(Patient patient) {
+//        if (patient == null) {
+//            throw new IllegalArgumentException("Patient cannot be null.");
+//        }
+//        if (!patients.contains(patient)) {
+//            patients.add(patient);
+//            patient.addDoctor(this); // bidirectional addition
+//        }
+//    }
+//
+//    /**
+//     * static method to remove a patient from the doctor's list
+//     * to use in DataFactory
+//     * @param patient The Patient to be removed
+//     */
+//    public void removePatient(Patient patient) {
+//        if (patients.contains(patient)) {
+//            patients.remove(patient);
+//            patient.removeDoctor(this); // bidirectional removal
+//        }
+//    }
 
     // toString() Method
     @Override
@@ -186,7 +184,7 @@ public class Doctor {
                 ", hireDate=" + hireDate +
                 ", gender=" + gender +
                 ", hospital=" + (hospital != null ? hospital.getHospitalName() : "No Hospital Assigned") +
-                ", patients=" + patients.size() + " patients" +
+                ", patients=" + medicalRecords.size() + " medical records" +
                 '}';
     }
 

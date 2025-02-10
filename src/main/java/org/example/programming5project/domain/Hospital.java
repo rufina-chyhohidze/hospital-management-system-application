@@ -21,11 +21,11 @@ public class Hospital {
     private String hospitalAddress;
     @ElementCollection
     @Enumerated(EnumType.STRING)
-    private List<Department> departments = new ArrayList<>(); // Changed from String[] to List<Department>
+    private List<Department> departments = new ArrayList<>();
     private LocalDate establishedDate;
 
     // One-to-Many relationship: Hospital has many Doctors
-    @OneToMany(mappedBy = "hospital", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "hospital", fetch = FetchType.LAZY)
     private List<Doctor> doctors = new ArrayList<>();
 
     public Hospital(String hospitalName, String hospitalAddress, List<Department> departments, LocalDate establishedDate) {
@@ -34,7 +34,7 @@ public class Hospital {
         }
         this.hospitalName = hospitalName;
         this.hospitalAddress = hospitalAddress;
-        this.departments = new ArrayList<>(departments); // Defensive copy
+        this.departments = new ArrayList<>(departments);
         this.establishedDate = establishedDate;
         this.doctors = new ArrayList<>();
     }

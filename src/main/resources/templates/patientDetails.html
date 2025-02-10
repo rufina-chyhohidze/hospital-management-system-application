@@ -64,6 +64,26 @@
     </select>
     <button type="submit" class="btn btn-primary mt-2">Assign Doctor</button>
 </form>
+<h2>Medical Records</h2>
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Doctor</th>
+        <th>Diagnosis</th>
+        <th>Treatment</th>
+        <th>Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="record : ${medicalRecords}">
+        <td th:text="${record.doctor.firstName} + ' ' + ${record.doctor.lastName}"></td>
+        <td th:text="${record.diagnosis}"></td>
+        <td th:text="${record.treatment}"></td>
+        <td th:text="${record.treatmentDate}"></td>
+    </tr>
+    </tbody>
+</table>
+
 
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>

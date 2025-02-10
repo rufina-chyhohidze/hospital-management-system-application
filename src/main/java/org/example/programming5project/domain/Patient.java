@@ -3,9 +3,7 @@ package org.example.programming5project.domain;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Patient (Many-to-Many with Doctor)
@@ -29,10 +27,8 @@ public class Patient {
 
     private LocalDate admissionDate;
 
-    // Many-to-Many relationship with Doctor
-    @ManyToMany(mappedBy = "patients", cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.REFRESH, CascadeType.MERGE})
-    private Set<Doctor> doctors = new HashSet<>();
-
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
+    private List<MedicalRecord> medicalRecords = new ArrayList<>();
     // Many-to-One relationship with Hospital
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hospital_id", nullable = true) // Nullable hospital association
@@ -46,7 +42,7 @@ public class Patient {
         this.patientId = patientId;
         this.billingAmount = billingAmount;
         this.admissionDate = admissionDate;
-        this.doctors = new HashSet<>();
+       // this.doctors = new HashSet<>();
         this.hospital = hospital;
     }
 
@@ -100,38 +96,42 @@ public class Patient {
         return admissionDate;
     }
 
-    public Set<Doctor> getDoctors() {
-        return new HashSet<>(doctors); // Return a copy to maintain encapsulation
+    public List<MedicalRecord> getMedicalRecords() {
+        return medicalRecords;
     }
 
-    // Many-to-Many Relationship Methods
-
-    /**
-     * Method that adds a doctor to a patient's list ensuring bidirectional relationship
-     *
-     * @param doctor The Doctor to be added
-     */
-    public void addDoctor(Doctor doctor) {
-        if (doctor == null) {
-            throw new IllegalArgumentException("Doctor cannot be null.");
-        }
-        if (!doctors.contains(doctor)) {
-            doctors.add(doctor);
-            doctor.addPatient(this); // Bidirectional addition
-        }
+    public void setMedicalRecords(List<MedicalRecord> medicalRecords) {
+        this.medicalRecords = medicalRecords;
     }
-
-    /**
-     * Method to remove a doctor from a patient's list
-     *
-     * @param doctor The Doctor to be removed
-     */
-    public void removeDoctor(Doctor doctor) {
-        if (doctors.contains(doctor)) {
-            doctors.remove(doctor);
-            doctor.removePatient(this); // Bidirectional removal
-        }
-    }
+//
+//    // Many-to-Many Relationship Methods
+//
+//    /**
+//     * Method that adds a doctor to a patient's list ensuring bidirectional relationship
+//     *
+//     * @param doctor The Doctor to be added
+//     */
+//    public void addDoctor(Doctor doctor) {
+//        if (doctor == null) {
+//            throw new IllegalArgumentException("Doctor cannot be null.");
+//        }
+//        if (!doctors.contains(doctor)) {
+//            doctors.add(doctor);
+//            doctor.addPatient(this); // Bidirectional addition
+//        }
+//    }
+//
+//    /**
+//     * Method to remove a doctor from a patient's list
+//     *
+//     * @param doctor The Doctor to be removed
+//     */
+//    public void removeDoctor(Doctor doctor) {
+//        if (doctors.contains(doctor)) {
+//            doctors.remove(doctor);
+//            doctor.removePatient(this); // Bidirectional removal
+//        }
+//    }
 
     // toString() Method
     @Override
@@ -144,7 +144,7 @@ public class Patient {
                 ", patientId='" + patientId + '\'' +
                 ", billingAmount=" + billingAmount +
                 ", admissionDate=" + admissionDate +
-                ", doctors=" + doctors.size() + " doctors" +
+                ", doctors=" + medicalRecords.size() + " medical records" +
                 '}';
     }
 
@@ -182,9 +182,6 @@ public class Patient {
         this.admissionDate = admissionDate;
     }
 
-    public void setDoctors(Set<Doctor> doctors) {
-        this.doctors = doctors;
-    }
 
     /**
      * Overriding hashCode method based on patientId.
