@@ -8,6 +8,7 @@ import java.time.LocalDate;
  * association table that tracks medical treatments between a doctor and a patient
  */
 @Entity
+//@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"doctor_license_number","patient_patient_id"})})
 public class MedicalRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -43,10 +44,6 @@ public class DoctorJpaDataServiceImpl implements DoctorService {
         return doctorRepository.findAll();
     }
 
-    @Override
-    public List<Doctor> getDoctorsByDepartment(Department department) {
-        return doctorRepository.findByDepartment(department);
-    }
 
     @Override
     @Transactional(readOnly = true) // Fetch Doctor with Medical Records
@@ -66,10 +63,6 @@ public class DoctorJpaDataServiceImpl implements DoctorService {
         doctorRepository.deleteById(licenseNumber);
     }
 
-    @Override
-    public List<Doctor> getDoctorsForPatient(String patientId) {
-        return doctorRepository.findDoctorsForPatient(patientId);
-    }
 
     @Override
     @Transactional
@@ -90,5 +83,20 @@ public class DoctorJpaDataServiceImpl implements DoctorService {
         }
     }
 
+    @Override
+    @Transactional
+    public void addMedicalRecord(int doctorId, String patientId, LocalDate treatmentDate, String diagnosis, String treatment) {
+        Doctor doctor = doctorRepository.findDoctorByLicenseNumber(doctorId)
+                .orElseThrow(() -> new RuntimeException("Doctor not found"));
+        Patient patient = patientRepository.findById(patientId)
+                .orElseThrow(() -> new RuntimeException("Patient not found"));
 
+        MedicalRecord record = new MedicalRecord(doctor, patient);
+        record.setTreatmentDate(treatmentDate);
+        record.setDiagnosis(diagnosis);
+        record.setTreatment(treatment);
+
+        medicalRecordRepository.save(record);
+        logger.info("Medical record added: Doctor {} - Patient {}", doctorId, patientId);
+    }
 }

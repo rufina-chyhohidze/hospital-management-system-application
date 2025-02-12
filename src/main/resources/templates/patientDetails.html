@@ -57,13 +57,7 @@
         </div>
     </div>
 </div>
-<form th:action="@{/patients/{patientId}/assign-doctor(patientId=${patient.patientId})}" method="post">
-    <select name="doctorId" class="form-select">
-        <option th:each="doctor : ${allDoctors}" th:value="${doctor.licenseNumber}"
-                th:text="${doctor.firstName} + ' ' + ${doctor.lastName}"></option>
-    </select>
-    <button type="submit" class="btn btn-primary mt-2">Assign Doctor</button>
-</form>
+
 <h2>Medical Records</h2>
 <table class="table table-bordered">
     <thead>

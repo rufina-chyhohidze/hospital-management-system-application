@@ -120,17 +120,6 @@ public class PatientController {
         logger.info("Patient added successfully: {}", patient);
         return "redirect:/patients";
     }
-
-    @PostMapping("/{patientId}/assign-doctor")
-    public String assignDoctorToPatient(@PathVariable String patientId, @RequestParam String doctorId) {
-        logger.info("Assigning doctor {} to patient {}", doctorId, patientId);
-        if (doctorId == null || doctorId.isEmpty()) {
-            throw new IllegalArgumentException("Doctor ID is empty");
-        }
-        patientService.assignDoctorToPatient(patientId, Integer.parseInt(doctorId));
-        return "redirect:/patients/" + patientId;
-    }
-
         //to be able to search for a patient by name or admission date.
         @GetMapping("/search")
         public String searchPatients(
@@ -145,7 +134,6 @@ public class PatientController {
             } else {
                 logger.info("Admission Date is NULL");
             }
-            //service method
             List<Patient> patients = patientService.getPatientsByNameOrAdmissionDate(name.isEmpty()?"name": name, admissionDate);
 
             if (patients.isEmpty()) {

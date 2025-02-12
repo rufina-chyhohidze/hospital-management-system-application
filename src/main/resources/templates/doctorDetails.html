@@ -57,13 +57,37 @@
         </div>
     </div>
 </div>
-<form th:action="@{/doctors/{doctorId}/assign-patient(doctorId=${doctor.licenseNumber})}" method="post">
-    <select name="patientId" class="form-select">
-        <option th:each="patient : ${allPatients}" th:value="${patient.patientId}"
-                th:text="${patient.firstName} + ' ' + ${patient.lastName}"></option>
-    </select>
-    <button type="submit" class="btn btn-primary mt-2">Assign Patient</button>
+
+<h2>Add Medical Record</h2>
+<form th:action="@{/doctors/{doctorId}/add-medical-record(doctorId=${doctor.licenseNumber})}" method="post">
+    <div class="form-group">
+        <label for="patientId">Select Patient</label>
+        <select id="patientId" name="patientId" class="form-select" required>
+            <option value="" disabled selected>Select a patient</option>
+            <option th:each="patient : ${allPatients}" th:value="${patient.patientId}"
+                    th:text="${patient.firstName} + ' ' + ${patient.lastName}"></option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="diagnosis">Diagnosis</label>
+        <input type="text" id="diagnosis" name="diagnosis" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label for="treatment">Treatment</label>
+        <input type="text" id="treatment" name="treatment" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label for="treatmentDate">Treatment Date</label>
+        <input type="date" id="treatmentDate" name="treatmentDate" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-success mt-3">Add Medical Record</button>
 </form>
+
+
 <h2>Medical Records</h2>
 <table class="table table-bordered">
     <thead>

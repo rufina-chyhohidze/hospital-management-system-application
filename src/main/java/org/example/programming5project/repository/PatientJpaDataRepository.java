@@ -26,13 +26,11 @@ public interface PatientJpaDataRepository  extends JpaRepository<Patient, String
     Optional<Patient> findPatientWithMedicalRecords(@Param("patientId") String patientId);
 
     @Query("""
-    SELECT p FROM Patient p
+    SELECT DISTINCT p FROM Patient p
     LEFT JOIN FETCH p.medicalRecords mr
-    LEFT JOIN FETCH mr.doctor
     WHERE mr.doctor.licenseNumber = :doctorId
     """)
     List<Patient> findPatientsForDoctor(@Param("doctorId") int doctorId);
-
 
 
     @Query("""

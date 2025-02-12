@@ -9,11 +9,14 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -55,7 +58,7 @@ public class DoctorController {
             throw new DoctorNotFoundException("Doctor with ID " + doctorId + " not found.");
         }
 
-        List<Patient> patients = patientService.getPatientsForDoctor(doctorId);
+        List<Patient> patients = patientService.getPatientsForDoctor(doctorId);//getnotassignedpatients
         List<Patient> allPatients = patientService.getAllPatients();
 
         // medical records explicitly
@@ -64,7 +67,9 @@ public class DoctorController {
         model.addAttribute("doctor", doctor);
         model.addAttribute("assignedPatients", patients);
         model.addAttribute("allPatients", allPatients);
-        model.addAttribute("medicalRecords", medicalRecords); // Include medical records
+        model.addAttribute("medicalRecords", medicalRecords);
+        ///i need not assigned patients ,and remove assign patients, and do i need all patinets?
+        // Include medical records
 
         return "doctorDetails";
     }
@@ -139,6 +144,19 @@ public class DoctorController {
         model.addAttribute("allPatients", allPatients);
 
         return "doctorDetails";
+    }
+
+    @PostMapping("/{doctorId}/add-medical-record")
+    public String addMedicalRecord(@PathVariable int doctorId,
+                                   @RequestParam String patientId,
+                                   @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate treatmentDate,
+                                   @RequestParam String diagnosis,
+                                   @RequestParam String treatment) {
+        logger.info("Adding medical record for Patient: {}, Doctor: {}", patientId, doctorId);
+
+        doctorService.addMedicalRecord(doctorId, patientId, treatmentDate, diagnosis, treatment);
+
+        return "redirect:/doctors/" + doctorId;
     }
 
 }
