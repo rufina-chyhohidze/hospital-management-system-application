@@ -1,0 +1,8 @@
+// to get all patients
+GET http://localhost:8080/api/patients
+
+###
+//to delete a patient
+DELETE http://localhost:8080/api/patients/P001
+//after running, run previous one and youll see that patient
+//with this id is deleted.

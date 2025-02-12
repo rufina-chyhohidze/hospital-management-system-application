@@ -1,11 +1,11 @@
-package org.example.programming5project.presentation;
+package org.example.programming5project.presentation.mvc;
 
 import org.example.programming5project.domain.Doctor;
 import org.example.programming5project.domain.Gender;
 import org.example.programming5project.domain.MedicalRecord;
 import org.example.programming5project.domain.Patient;
 import org.example.programming5project.exceptions.PatientNotFoundException;
-import org.example.programming5project.viewmodels.PatientForm;
+import org.example.programming5project.presentation.mvc.viewmodels.PatientForm;
 import org.example.programming5project.service.DoctorService;
 import org.example.programming5project.service.PatientService;
 import jakarta.servlet.http.HttpSession;

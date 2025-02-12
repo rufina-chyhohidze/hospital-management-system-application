@@ -1,8 +1,8 @@
-package org.example.programming5project.presentation;
+package org.example.programming5project.presentation.mvc;
 
 import org.example.programming5project.domain.*;
 import org.example.programming5project.exceptions.DoctorNotFoundException;
-import org.example.programming5project.viewmodels.DoctorForm;
+import org.example.programming5project.presentation.mvc.viewmodels.DoctorForm;
 import org.example.programming5project.service.DoctorService;
 import org.example.programming5project.service.PatientService;
 import jakarta.servlet.http.HttpSession;

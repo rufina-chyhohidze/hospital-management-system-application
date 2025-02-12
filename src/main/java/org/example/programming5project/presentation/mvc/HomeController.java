@@ -1,13 +1,10 @@
-package org.example.programming5project.presentation;
+package org.example.programming5project.presentation.mvc;
 
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 @Controller
 
