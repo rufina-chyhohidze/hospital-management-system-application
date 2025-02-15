@@ -31,6 +31,7 @@ public interface DoctorJpaDataRepository extends JpaRepository<Doctor, Integer> 
     SELECT d FROM Doctor d
     LEFT JOIN FETCH d.medicalRecords mr
     LEFT JOIN FETCH mr.patient
+    LEFT JOIN FETCH d.hospital
     WHERE d.licenseNumber = :licenseNumber
     """)
     Optional<Doctor> findDoctorByLicenseNumber(@Param("licenseNumber") int licenseNumber);

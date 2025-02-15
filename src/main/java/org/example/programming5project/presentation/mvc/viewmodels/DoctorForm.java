@@ -25,6 +25,8 @@ public class DoctorForm {
     private LocalDate hireDate;
     @NotNull
     private String gender;
+    @NotNull(message = "Hospital is required")
+    private Long hospitalId;
 
     public DoctorForm() {
         logger.debug("Inside DoctorForm...");
@@ -86,6 +88,14 @@ public class DoctorForm {
 
     public void setGender(@NotNull String gender) {
         this.gender = gender;
+    }
+
+    public Long getHospitalId() {
+        return hospitalId;
+    }
+
+    public void setHospitalId(Long hospitalId) {
+        this.hospitalId = hospitalId;
     }
 
     @Override

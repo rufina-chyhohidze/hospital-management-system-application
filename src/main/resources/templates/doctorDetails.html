@@ -36,6 +36,7 @@
                     <h5 class="card-title" th:text="${doctor.firstName} + ' ' + ${doctor.lastName}"></h5>
                     <p class="card-text"><strong>License Number:</strong> <span th:text="${doctor.licenseNumber}"></span></p>
                     <p class="card-text"><strong>Department:</strong> <span th:text="${doctor.department}"></span></p>
+                    <p><strong>Hospital:</strong> <span th:text="${doctor.hospital.hospitalName}"></span></p>
                     <p class="card-text"><strong>Salary:</strong> <span th:text="${doctor.salary}"></span></p>
                     <p class="card-text"><strong>Hire Date:</strong> <span th:text="${doctor.hireDate}"></span></p>
                     <p class="card-text"><strong>Gender:</strong> <span th:text="${doctor.gender}"></span></p>

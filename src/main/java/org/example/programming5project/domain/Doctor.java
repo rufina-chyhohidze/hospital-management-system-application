@@ -40,7 +40,7 @@ public class Doctor {
 
     // Many-to-One relationship with Hospital
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hospital_id", nullable = true) // Foreign key to hospital
+    @JoinColumn(name = "hospital_id", nullable = true)
     private Hospital hospital;
 
 

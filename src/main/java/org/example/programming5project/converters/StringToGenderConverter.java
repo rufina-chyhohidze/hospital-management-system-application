@@ -12,7 +12,7 @@ public class StringToGenderConverter implements Converter<String, Gender> {
             return null;
         }
         try {
-            return Gender.valueOf(source.toUpperCase()); // Assuming enum values are uppercase
+            return Gender.valueOf(source.toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Invalid gender value: " + source);
         }

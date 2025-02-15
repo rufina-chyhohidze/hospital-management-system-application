@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Hospital</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+          th:href="@{/webjars/bootstrap-icons/font/bootstrap-icons.css}">
+    <link rel="stylesheet" th:href="@{/static/style.css}" href="/static/style.css">
+    <script defer th:src="@{/webjars/bootstrap/js/bootstrap.bundle.js}"
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/form.css">
+    <script src="/static/js/formValid.js" defer></script>
+    <!-- favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon/favicon-16x16.png">
+    <link rel="icon" href="/static/favicon/favicon.ico">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container-fluid px-1 py-5 mx-auto">
+    <div class="row d-flex justify-content-center">
+        <div class="col-xl-7 col-lg-8 col-md-9 col-11 text-center">
+            <div class="card">
+                <h4 class="text-center mb-4 text-primary">Add New Hospital</h4>
+                <form th:action="@{/hospitals/add}" th:object="${hospitalForm}" method="post" class="needs-validation form-card" novalidate>
+
+                    <!-- Hospital Name -->
+                    <div class="row justify-content-between text-left">
+                        <div class="form-group col-12 flex-column d-flex">
+                            <label for="hospitalName" class="form-control-label px-3">Hospital Name<span class="text-danger"> *</span></label>
+                            <input type="text" th:field="*{hospitalName}" id="hospitalName" class="form-control" required />
+                            <div th:if="${#fields.hasErrors('hospitalName')}" th:errors="*{hospitalName}" class="text-danger"></div>
+                            <div class="invalid-feedback">Hospital name is required.</div>
+                        </div>
+                    </div>
+
+                    <!-- Address -->
+                    <div class="row justify-content-between text-left">
+                        <div class="form-group col-12 flex-column d-flex">
+                            <label for="hospitalAddress" class="form-control-label px-3">Address<span class="text-danger"> *</span></label>
+                            <input type="text" th:field="*{hospitalAddress}" id="hospitalAddress" class="form-control" required />
+                            <div th:if="${#fields.hasErrors('hospitalAddress')}" th:errors="*{hospitalAddress}" class="text-danger"></div>
+                            <div class="invalid-feedback">Address is required.</div>
+                        </div>
+                    </div>
+
+                    <!-- Established Date -->
+                    <div class="row justify-content-between text-left">
+                        <div class="form-group col-12 flex-column d-flex">
+                            <label for="establishedDate" class="form-control-label px-3">Established Date<span class="text-danger"> *</span></label>
+                            <input type="date" th:field="*{establishedDate}" id="establishedDate" class="form-control" required />
+                            <div th:if="${#fields.hasErrors('establishedDate')}" th:errors="*{establishedDate}" class="text-danger"></div>
+                            <div class="invalid-feedback">Established date is required.</div>
+                        </div>
+                    </div>
+
+                    <!-- Departments -->
+                    <div class="row justify-content-between text-left">
+                        <div class="form-group col-12 flex-column d-flex">
+                            <label for="departments" class="form-control-label px-3">Departments<span class="text-danger"> *</span></label>
+                            <select multiple th:field="*{departments}" id="departments" class="form-select" required>
+                                <option value="CARDIOLOGY">Cardiology</option>
+                                <option value="NEUROLOGY">Neurology</option>
+                                <option value="ORTHOPEDICS">Orthopedics</option>
+                                <option value="PEDIATRICS">Pediatrics</option>
+                                <option value="DENTISTRY">Dentistry</option>
+                                <option value="SURGERY">Surgery</option>
+                            </select>
+                            <div th:if="${#fields.hasErrors('departments')}" th:errors="*{departments}" class="text-danger"></div>
+                            <div class="invalid-feedback">At least one department must be selected.</div>
+                        </div>
+                    </div>
+
+                    <!-- Submit and Cancel Buttons -->
+                    <div class="row justify-content-end">
+                        <div class="form-group col-sm-6">
+                            <button type="submit" class="btn btn-primary btn-block">Add Hospital</button>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <a th:href="@{/hospitals}" class="btn btn-secondary btn-block">Cancel</a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

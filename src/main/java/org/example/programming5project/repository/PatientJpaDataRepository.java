@@ -20,7 +20,8 @@ public interface PatientJpaDataRepository  extends JpaRepository<Patient, String
     @Query("""
     SELECT p FROM Patient p
     LEFT JOIN FETCH p.medicalRecords mr
-    LEFT JOIN FETCH mr.doctor
+    LEFT JOIN FETCH mr.doctor d
+    LEFT JOIN FETCH d.hospital h
     WHERE p.patientId = :patientId
     """)
     Optional<Patient> findPatientWithMedicalRecords(@Param("patientId") String patientId);
@@ -32,7 +33,6 @@ public interface PatientJpaDataRepository  extends JpaRepository<Patient, String
     """)
     List<Patient> findPatientsForDoctor(@Param("doctorId") int doctorId);
 
-
     @Query("""
     SELECT p FROM Patient p
     WHERE
@@ -43,7 +43,6 @@ public interface PatientJpaDataRepository  extends JpaRepository<Patient, String
             @Param("name") String name,
             @Param("admissionDate") LocalDate admissionDate
     );
-
 
 }
 

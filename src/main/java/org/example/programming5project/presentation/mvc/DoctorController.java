@@ -4,6 +4,7 @@ import org.example.programming5project.domain.*;
 import org.example.programming5project.exceptions.DoctorNotFoundException;
 import org.example.programming5project.presentation.mvc.viewmodels.DoctorForm;
 import org.example.programming5project.service.DoctorService;
+import org.example.programming5project.service.HospitalService;
 import org.example.programming5project.service.PatientService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -26,28 +27,32 @@ public class DoctorController {
     private static final Logger logger = LoggerFactory.getLogger(DoctorController.class);
     private final DoctorService doctorService;
     private final PatientService patientService;
+    private final HospitalService hospitalService;
     /**
      *
      * @param doctorService - qualifier can be removed, to use doctorServiceImpl(h2),"doctorJpaDataServiceImpl"(jpaData),"patientJpaDataServiceImpl"(jpaData)
      * @param patientService - now qualifier is used for postgres implementation
      */
    // @Autowired
-    public DoctorController( DoctorService doctorService,PatientService patientService) {
+    public DoctorController( DoctorService doctorService,PatientService patientService,HospitalService hospitalService) {
         this.doctorService = doctorService;
         this.patientService = patientService;
+        this.hospitalService = hospitalService;
+
     }
     @GetMapping
-    public String getAllDoctors(Model model, HttpSession session) {
+    public String getAllDoctors(Model model) {
         logger.info("Fetching all doctors...");
         model.addAttribute("doctors", doctorService.getAllDoctors());
         return "doctors";
     }
 
     @GetMapping("/add")
-    public String showAddDoctorForm(Model model, HttpSession session) {
+    public String showAddDoctorForm(Model model) {
         logger.info("Processing doctor's form...");
         model.addAttribute("doctorForm", new DoctorForm());
-        return "adddoctor"; //
+        model.addAttribute("hospitals", hospitalService.getAllHospitals());
+        return "adddoctor";
     }
 
     @GetMapping("/{doctorId}")
@@ -92,6 +97,7 @@ public class DoctorController {
     public String addDoctor(@ModelAttribute("doctorForm")@Valid DoctorForm doctorForm, BindingResult bindingResult, Model model,HttpSession session) {
         if(bindingResult.hasErrors()) {
             logger.warn("Validation errors: {}", bindingResult.getAllErrors());
+            model.addAttribute("hospitals", hospitalService.getAllHospitals());
             return "adddoctor"; //it returns to the form if validation fails
         }
         // Convert PatientForm to Patient entity and add to service
@@ -102,7 +108,10 @@ public class DoctorController {
         doctor.setSalary(doctorForm.getSalary());
         doctor.setDepartment(Department.valueOf(doctorForm.getDepartment().toUpperCase()));
         doctor.setHireDate(doctorForm.getHireDate());
-        doctor.setGender(Gender.valueOf(doctorForm.getGender().toUpperCase()));;
+        doctor.setGender(Gender.valueOf(doctorForm.getGender().toUpperCase()));
+
+        Hospital hospital = hospitalService.findById(doctorForm.getHospitalId());
+        doctor.setHospital(hospital);
 
         doctorService.addDoctor(doctor);
         logger.info("Successfully added a new doctor: {}", doctorForm.toString());
