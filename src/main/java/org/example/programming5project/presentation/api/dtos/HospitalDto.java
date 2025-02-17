@@ -9,5 +9,9 @@ public record HospitalDto(Long id,
                           String hospitalName,
                           String hospitalAddress,
                           LocalDate establishedDate,
-                          List<Department> departments) {
+                          List<Department> departments)
+{
+
+
+
 }

@@ -1,6 +1,9 @@
 package org.example.programming5project.domain;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.time.LocalDate;
 
@@ -15,11 +18,12 @@ public class MedicalRecord {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Doctor doctor;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Patient patient;
-
     private LocalDate treatmentDate;
     private String diagnosis;
     private String treatment;

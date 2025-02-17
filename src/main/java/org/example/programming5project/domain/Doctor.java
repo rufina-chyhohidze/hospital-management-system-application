@@ -1,6 +1,8 @@
 package org.example.programming5project.domain;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -16,7 +18,7 @@ import java.util.*;
 public class Doctor {
     @Id
     @Column(name = "license_number", unique = true, nullable = false)
-    private int licenseNumber; // Doctor's unique identifier (primary key)
+    private int licenseNumber;
 
     private String firstName;
     private String lastName;
@@ -30,17 +32,11 @@ public class Doctor {
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
-
-    // Many-to-Many relationship with Patient
-   // @ManyToMany( cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.REFRESH, CascadeType.MERGE})
-
     @OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY)
     private List<MedicalRecord> medicalRecords = new ArrayList<>();
-   // private Set<Patient> patients = new HashSet<>();
-
-    // Many-to-One relationship with Hospital
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hospital_id", nullable = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Hospital hospital;
 
 
@@ -98,7 +94,6 @@ public class Doctor {
         this.lastName = lastName;
         this.licenseNumber = licenseNumber;
         this.department = department;
-       // this.patients = new HashSet<>(); //for patient initialisation
     }
 
     // Getters and Setters
@@ -142,37 +137,6 @@ public class Doctor {
         this.hospital = hospital;
     }
 
-//
-//    // Many-to-Many Relationship Methods
-//
-//    /**
-//     * static method to add a patient to the doctor's list
-//     * for usage in DataFACTORY
-//     * @param patient The Patient to be added
-//     */
-//    public void addPatient(Patient patient) {
-//        if (patient == null) {
-//            throw new IllegalArgumentException("Patient cannot be null.");
-//        }
-//        if (!patients.contains(patient)) {
-//            patients.add(patient);
-//            patient.addDoctor(this); // bidirectional addition
-//        }
-//    }
-//
-//    /**
-//     * static method to remove a patient from the doctor's list
-//     * to use in DataFactory
-//     * @param patient The Patient to be removed
-//     */
-//    public void removePatient(Patient patient) {
-//        if (patients.contains(patient)) {
-//            patients.remove(patient);
-//            patient.removeDoctor(this); // bidirectional removal
-//        }
-//    }
-
-    // toString() Method
     @Override
     public String toString() {
         return "Doctor{" +

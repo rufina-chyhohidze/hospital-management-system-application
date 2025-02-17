@@ -1,6 +1,8 @@
 package org.example.programming5project.domain;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -29,9 +31,9 @@ public class Patient {
 
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
     private List<MedicalRecord> medicalRecords = new ArrayList<>();
-    // Many-to-One relationship with Hospital
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hospital_id", nullable = true) // Nullable hospital association
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "hospital_id", nullable = true)
     private Hospital hospital;
 
     public Patient(String firstName, String lastName, int age, Gender gender, String patientId, double billingAmount, LocalDate admissionDate,Hospital hospital) {
@@ -42,7 +44,6 @@ public class Patient {
         this.patientId = patientId;
         this.billingAmount = billingAmount;
         this.admissionDate = admissionDate;
-       // this.doctors = new HashSet<>();
         this.hospital = hospital;
     }
 
@@ -103,37 +104,7 @@ public class Patient {
     public void setMedicalRecords(List<MedicalRecord> medicalRecords) {
         this.medicalRecords = medicalRecords;
     }
-//
-//    // Many-to-Many Relationship Methods
-//
-//    /**
-//     * Method that adds a doctor to a patient's list ensuring bidirectional relationship
-//     *
-//     * @param doctor The Doctor to be added
-//     */
-//    public void addDoctor(Doctor doctor) {
-//        if (doctor == null) {
-//            throw new IllegalArgumentException("Doctor cannot be null.");
-//        }
-//        if (!doctors.contains(doctor)) {
-//            doctors.add(doctor);
-//            doctor.addPatient(this); // Bidirectional addition
-//        }
-//    }
-//
-//    /**
-//     * Method to remove a doctor from a patient's list
-//     *
-//     * @param doctor The Doctor to be removed
-//     */
-//    public void removeDoctor(Doctor doctor) {
-//        if (doctors.contains(doctor)) {
-//            doctors.remove(doctor);
-//            doctor.removePatient(this); // Bidirectional removal
-//        }
-//    }
 
-    // toString() Method
     @Override
     public String toString() {
         return "Patient{" +

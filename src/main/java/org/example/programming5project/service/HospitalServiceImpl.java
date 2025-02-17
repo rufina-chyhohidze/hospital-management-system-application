@@ -1,9 +1,11 @@
 package org.example.programming5project.service;
 
 import org.example.programming5project.domain.Department;
+import org.example.programming5project.domain.Doctor;
 import org.example.programming5project.domain.Hospital;
 import org.example.programming5project.presentation.api.dtos.HospitalDto;
 import org.example.programming5project.presentation.mvc.viewmodels.HospitalForm;
+import org.example.programming5project.repository.DoctorJpaDataRepository;
 import org.example.programming5project.repository.HospitalJpaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,16 +13,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class HospitalServiceImpl implements HospitalService {
     private final HospitalJpaRepository hospitalJpaRepository;
+    private final DoctorJpaDataRepository doctorJpaDataRepository;
     private final Logger logger = LoggerFactory.getLogger(HospitalServiceImpl.class);
 
-    public HospitalServiceImpl(HospitalJpaRepository hospitalJpaRepository) {
+    public HospitalServiceImpl(HospitalJpaRepository hospitalJpaRepository, DoctorJpaDataRepository doctorJpaDataRepository) {
         this.hospitalJpaRepository = hospitalJpaRepository;
+        this.doctorJpaDataRepository = doctorJpaDataRepository;
     }
     @Override
     public List<HospitalDto> getAllHospitals() {
@@ -53,5 +58,28 @@ public class HospitalServiceImpl implements HospitalService {
                 .collect(Collectors.toList()));
 
         hospitalJpaRepository.save(hospital);
+    }
+
+    @Override
+    @Transactional
+    public boolean deleteHospital(Long hospitalId) {
+        Optional<Hospital> hospitalOptional = hospitalJpaRepository.findById(hospitalId);
+
+        if (hospitalOptional.isEmpty()) {
+            return false; // Hospital not found
+        }
+
+        Hospital hospital = hospitalOptional.get();
+
+        // Step 1: Unassign all doctors from this hospital
+        List<Doctor> doctors = doctorJpaDataRepository.findByHospital(hospital);
+        for (Doctor doctor : doctors) {
+            doctor.setHospital(null); // Unassign hospital
+        }
+        doctorJpaDataRepository.saveAll(doctors);
+
+        // Step 2: Now delete the hospital safely
+        hospitalJpaRepository.deleteById(hospitalId);
+        return true;
     }
 }

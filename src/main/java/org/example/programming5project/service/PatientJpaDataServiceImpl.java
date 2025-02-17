@@ -48,7 +48,7 @@ public class PatientJpaDataServiceImpl implements PatientService {
     }
 
     @Override
-    @Transactional // Defines Transaction Boundary
+    @Transactional
     public Patient findPatientById(String patientId) {
         return patientRepository.findPatientWithMedicalRecords(patientId)
                 .orElseThrow(() -> new PatientNotFoundException("Patient with ID " + patientId + " not found"));

@@ -2,6 +2,7 @@ package org.example.programming5project.repository;
 
 import org.example.programming5project.domain.Department;
 import org.example.programming5project.domain.Doctor;
+import org.example.programming5project.domain.Hospital;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -35,4 +36,5 @@ public interface DoctorJpaDataRepository extends JpaRepository<Doctor, Integer> 
     WHERE d.licenseNumber = :licenseNumber
     """)
     Optional<Doctor> findDoctorByLicenseNumber(@Param("licenseNumber") int licenseNumber);
+    List<Doctor> findByHospital(Hospital hospital);
 }
