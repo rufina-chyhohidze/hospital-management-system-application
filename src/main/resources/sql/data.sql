@@ -3,7 +3,14 @@ INSERT INTO hospital (established_date, hospital_address, hospital_name)
 VALUES
     ('1985-06-15', '123 Main St, Cityville', 'Cityville General Hospital'),
     ('1995-09-23', '456 Oak St, Townsville', 'Townsville Medical Center'),
-    ('2005-03-10', '789 Pine St, Villagetown', 'Villagetown Regional Hospital')
+    ('2005-03-10', '789 Pine St, Villagetown', 'Villagetown Regional Hospital'),
+    ('2010-07-20', '101 Maple Ave, Metropolis', 'Metropolis Health Institute'),
+    ('1980-11-05', '202 Elm Rd, Riverside', 'Riverside Community Hospital'),
+    ('1992-04-18', '303 Birch Ln, Lakeview', 'Lakeview Medical Center'),
+    ('1975-09-30', '404 Cedar Dr, Hilltop', 'Hilltop General Hospital'),
+    ('2000-12-12', '505 Walnut St, Seaside', 'Seaside Regional Medical Center'),
+    ('2015-08-25', '606 Spruce Ave, Downtown', 'Downtown Healthcare Facility'),
+    ('1998-06-05', '707 Chestnut Blvd, Uptown', 'Uptown Medical Research Center')
 RETURNING id;
 
 -- Insert data into hospital_departments table
@@ -14,7 +21,21 @@ VALUES
     (2, 'SURGERY'),
     (2, 'ORTHOPEDICS'),
     (3, 'PEDIATRICS'),
-    (3, 'DENTISTRY');
+    (3, 'DENTISTRY'),
+    (4, 'RADIOLOGY'),
+    (4, 'NEUROLOGY'),
+    (5, 'ORTHOPEDICS'),
+    (5, 'CARDIOLOGY'),
+    (6, 'SURGERY'),
+    (6, 'PEDIATRICS'),
+    (7, 'DENTISTRY'),
+    (7, 'RADIOLOGY'),
+    (8, 'NEUROLOGY'),
+    (8, 'CARDIOLOGY'),
+    (9, 'SURGERY'),
+    (9, 'ORTHOPEDICS'),
+    (10, 'PEDIATRICS'),
+    (10, 'DENTISTRY');
 
 -- Insert data into doctors table
 INSERT INTO doctors (hire_date, license_number, salary, hospital_id, department, first_name, gender, last_name)

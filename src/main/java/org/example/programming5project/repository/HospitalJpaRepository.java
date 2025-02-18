@@ -15,4 +15,6 @@ public interface HospitalJpaRepository  extends JpaRepository<Hospital,Long> {
     """)
     List<Hospital> findAllWithDepartments();
 
+    List<Hospital> findByHospitalNameContainingIgnoreCaseOrHospitalAddressContainingIgnoreCase(
+            String name, String address);
 }

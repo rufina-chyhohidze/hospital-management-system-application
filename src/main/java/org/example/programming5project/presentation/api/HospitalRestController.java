@@ -1,14 +1,15 @@
 package org.example.programming5project.presentation.api;
 
+import org.example.programming5project.presentation.api.dtos.HospitalDto;
 import org.example.programming5project.service.HospitalService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Collections;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/hospitals")
@@ -20,18 +21,18 @@ public class HospitalRestController {
         this.hospitalService = hospitalService;
     }
 
-    @DeleteMapping("/{hospitalId}")
-    public ResponseEntity<Void> deleteHospital(@PathVariable Long hospitalId) {
-        logger.info("Attempting to delete hospital with ID: {}", hospitalId);
-
-        boolean deleted = hospitalService.deleteHospital(hospitalId);
-
-        if (!deleted) {
-            logger.warn("Hospital with ID {} not found.", hospitalId);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    @GetMapping("/search")
+    public ResponseEntity<List<HospitalDto>> searchHospitals(@RequestParam(required = false, defaultValue = "") String search) {
+        if (search.trim().isEmpty()) {
+            return ResponseEntity.ok(Collections.emptyList());
         }
 
-        logger.info("Hospital with ID {} deleted successfully.", hospitalId);
-        return ResponseEntity.noContent().build();
+        List<HospitalDto> searchResult = hospitalService.searchHospitals(search);
+
+        if (searchResult.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.ok(searchResult);
+        }
     }
 }

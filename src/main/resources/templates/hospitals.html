@@ -30,8 +30,9 @@
                         <div class="card bg-dark shadow-2-strong">
                             <div class="card-body">
                                 <h1 class="mb-4 text-white">All Hospitals</h1>
-
-
+                                <div class="mb-4">
+                                    <input type="text" id="searchTerm" class="form-control" placeholder="Search" aria-label="Search hospitals by name or address">
+                                </div>
                                 <a href="/hospitals/add" class="btn btn-primary mb-3">Add New Hospital</a>
 
                                 <div class="table-responsive">
@@ -42,7 +43,6 @@
                                             <th>Address</th>
                                             <th>Established Date</th>
                                             <th>Departments</th>
-                                            <th>Actions</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -51,17 +51,16 @@
                                             <td th:text="${hospital.hospitalAddress}">Address</td>
                                             <td th:text="${hospital.establishedDate}">Established Date</td>
                                             <td>
-                        <span th:each="department, iterStat : ${hospital.departments}">
-                            <span th:text="${department}"></span>
-                            <span th:if="${!iterStat.last}">, </span>
-                        </span>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-danger btn-sm delete-hospital-btn">
-                                                    <i class="bi bi-trash"></i> Delete
-                                                </button>
+                                              <span th:each="department, iterStat : ${hospital.departments}">
+                                                  <span th:text="${department}"></span>
+                                                  <span th:if="${!iterStat.last}">, </span>
+                                              </span>
                                             </td>
                                         </tr>
+                                        </tbody>
+                                        <tbody>
+
+
                                         </tbody>
                                     </table>
                                 </div>

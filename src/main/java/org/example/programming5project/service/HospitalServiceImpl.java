@@ -60,26 +60,35 @@ public class HospitalServiceImpl implements HospitalService {
         hospitalJpaRepository.save(hospital);
     }
 
+  //  @Override
+  //  @Transactional
+  //  public boolean deleteHospital(Long hospitalId) {
+  //      Optional<Hospital> hospitalOptional = hospitalJpaRepository.findById(hospitalId);
+//
+  //      if (hospitalOptional.isEmpty()) {
+  //          return false;
+  //      }
+//
+  //      Hospital hospital = hospitalOptional.get();
+//
+  //      List<Doctor> doctors = doctorJpaDataRepository.findByHospital(hospital);
+  //      for (Doctor doctor : doctors) {
+  //          doctor.setHospital(null);
+  //      }
+  //      doctorJpaDataRepository.saveAll(doctors);
+//
+  //      hospitalJpaRepository.deleteById(hospitalId);
+  //      return true;
+  //  }
+
     @Override
-    @Transactional
-    public boolean deleteHospital(Long hospitalId) {
-        Optional<Hospital> hospitalOptional = hospitalJpaRepository.findById(hospitalId);
+    public List<HospitalDto> searchHospitals(String search) {
+        List<Hospital> hospitals = hospitalJpaRepository
+                .findByHospitalNameContainingIgnoreCaseOrHospitalAddressContainingIgnoreCase(search, search);
 
-        if (hospitalOptional.isEmpty()) {
-            return false; // Hospital not found
-        }
-
-        Hospital hospital = hospitalOptional.get();
-
-        // Step 1: Unassign all doctors from this hospital
-        List<Doctor> doctors = doctorJpaDataRepository.findByHospital(hospital);
-        for (Doctor doctor : doctors) {
-            doctor.setHospital(null); // Unassign hospital
-        }
-        doctorJpaDataRepository.saveAll(doctors);
-
-        // Step 2: Now delete the hospital safely
-        hospitalJpaRepository.deleteById(hospitalId);
-        return true;
+        return hospitals.stream()
+                .map(h -> new HospitalDto(h.getId(), h.getHospitalName(), h.getHospitalAddress(), h.getEstablishedDate(), h.getDepartments()))
+                .toList();
     }
+
 }

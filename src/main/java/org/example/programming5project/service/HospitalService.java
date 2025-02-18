@@ -10,5 +10,5 @@ public interface HospitalService {
     List<HospitalDto> getAllHospitals();
     Hospital findById(Long id);
     void addHospital(HospitalForm hospitalForm);
-    boolean deleteHospital(Long hospitalId);
+    List<HospitalDto> searchHospitals(String search);
 }
