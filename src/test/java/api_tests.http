@@ -6,3 +6,6 @@ GET http://localhost:8080/api/patients
 DELETE http://localhost:8080/api/patients/P003
 //after running, run previous one and youll see that patient
 //with this id is deleted.
+
+###
+GET http://localhost:8080/api/hospitals?search=uptown

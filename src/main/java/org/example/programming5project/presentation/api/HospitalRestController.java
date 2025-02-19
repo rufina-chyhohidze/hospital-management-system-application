@@ -21,7 +21,7 @@ public class HospitalRestController {
         this.hospitalService = hospitalService;
     }
 
-    @GetMapping("/search")
+    @GetMapping
     public ResponseEntity<List<HospitalDto>> searchHospitals(@RequestParam(required = false, defaultValue = "") String search) {
         if (search.trim().isEmpty()) {
             return ResponseEntity.ok(Collections.emptyList());

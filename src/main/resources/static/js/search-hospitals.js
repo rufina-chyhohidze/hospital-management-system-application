@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        const response = await fetch(`/api/hospitals/search?search=${searchTermInput.value}`);
+        const response = await fetch(`/api/hospitals?search=${searchTermInput.value}`);
 
         if (response.status === 200) {
             const hospitals = await response.json();
