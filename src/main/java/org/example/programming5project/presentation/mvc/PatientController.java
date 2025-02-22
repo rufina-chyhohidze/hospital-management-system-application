@@ -70,7 +70,7 @@ public class PatientController {
 
 
     @RequestMapping("/delete/{patientId}")
-    public String deletePatient(@PathVariable String patientId, HttpSession session) {
+    public String deletePatient(@PathVariable String patientId) {
         Patient patient = patientService.findPatientById(patientId);
         if (patient == null) {
             logger.error("Patient with ID {} not found, cannot delete.", patientId);

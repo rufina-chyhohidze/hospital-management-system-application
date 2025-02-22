@@ -30,8 +30,10 @@ public class HospitalRestController {
         List<HospitalDto> searchResult = hospitalService.searchHospitals(search);
 
         if (searchResult.isEmpty()) {
+            logger.info("No hospital found with name: {}", search);
             return ResponseEntity.noContent().build();
         } else {
+            logger.info("Hospital found with name: {}", search);
             return ResponseEntity.ok(searchResult);
         }
     }

@@ -16,7 +16,7 @@ import java.util.*;
 public class Patient {
     @Id
     @Column(name = "patient_id", unique = true, nullable = false)
-    private String patientId; // Patient's unique identifier (primary key)
+    private String patientId;
 
     private String firstName;
     private String lastName;
