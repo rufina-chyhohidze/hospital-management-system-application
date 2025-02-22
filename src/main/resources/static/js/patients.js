@@ -47,17 +47,84 @@ document.addEventListener("DOMContentLoaded", function () {
                 <a href="/patients/${patient.patientId}" class="btn btn-info btn-sm">
                     View Details
                 </a>
+           
                 <button type="button" class="btn btn-danger btn-sm delete-patient-btn">
                     <i class="bi bi-trash"></i> Delete
+                </button>
+                
+                <button type="button" class="btn btn-warning btn-sm edit-patient-btn">
+                    <i class="bi bi-pencil"></i> Edit
                 </button>
             </td>
         `;
 
         patientsTableBody.prepend(newRow);
 
+        attachEventListeners(newRow, patient.patientId);
+    }
 
-        const newDeleteButton = newRow.querySelector(".delete-patient-btn");
-        newDeleteButton.addEventListener("click", () => deletePatient(patient.patientId, newRow));
+    function attachEventListeners(tableRow, patientId) {
+        const editButton = tableRow.querySelector(".edit-patient-btn");
+        const deleteButton = tableRow.querySelector(".delete-patient-btn");
+
+        editButton.addEventListener("click", () => enableEditing(tableRow, patientId));
+        deleteButton.addEventListener("click", () => deletePatient(patientId, tableRow));
+    }
+
+    function enableEditing(tableRow, patientId) {
+        const admissionDateCell = tableRow.children[4];
+        const billingAmountCell = tableRow.children[5];
+
+        const admissionDateInput = document.createElement("input");
+        admissionDateInput.type = "date";
+        admissionDateInput.value = admissionDateCell.textContent.trim();
+        admissionDateCell.innerHTML = "";
+        admissionDateCell.appendChild(admissionDateInput);
+
+        const billingAmountInput = document.createElement("input");
+        billingAmountInput.type = "number";
+        billingAmountInput.value = billingAmountCell.textContent.trim();
+        billingAmountCell.innerHTML = "";
+        billingAmountCell.appendChild(billingAmountInput);
+
+        const editButton = tableRow.querySelector(".edit-patient-btn");
+        editButton.classList.remove("btn-warning");
+        editButton.classList.add("btn-success");
+        editButton.innerHTML = `<i class="bi bi-check-lg"></i> Save`;
+
+        editButton.removeEventListener("click", () => enableEditing(tableRow, patientId));
+        editButton.addEventListener("click", () =>
+            updatePatient(patientId, admissionDateInput.value, billingAmountInput.value, tableRow)
+        );
+    }
+
+    async function updatePatient(patientId, admissionDate, billingAmount, tableRow) {
+        const response = await fetch(`/api/patients/${patientId}`, {
+            method: "PATCH",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                admissionDate: admissionDate,
+                billingAmount: parseFloat(billingAmount)
+            })
+        });
+
+        if (response.status === 204) {
+            tableRow.children[4].textContent = admissionDate;
+            tableRow.children[5].textContent = billingAmount;
+
+            const editButton = tableRow.querySelector(".edit-patient-btn");
+            editButton.classList.remove("btn-success");
+            editButton.classList.add("btn-warning");
+            editButton.innerHTML = `<i class="bi bi-pencil"></i> Edit`;
+
+            editButton.removeEventListener("click", () => updatePatient(patientId, admissionDate, billingAmount, tableRow));
+            editButton.addEventListener("click", () => enableEditing(tableRow, patientId));
+        } else {
+            alert("Failed to update patient. Please try again.");
+        }
     }
 
     async function deletePatient(patientId, tableRow) {

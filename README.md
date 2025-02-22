@@ -45,10 +45,19 @@ GET http://localhost:8080/api/hospitals?search=uptown
 ```
 - Successful search - status 200
 - No content - status 204 
+
+## **Week 3 - Addition API and updating
 - ### To add patient
 ```
 POST http://localhost:8080/api/patients
 ```
 - Successful addition - status 201
 - Bad request - status 400
+### To update patients billing amount or admission date
+```
+  PATCH http://localhost:8080/api/patients/P001
+```
+- Successful update - status 204
+- Patient not found for update - status 404
+- Bad request (not corresponds to validation) - status 400
 

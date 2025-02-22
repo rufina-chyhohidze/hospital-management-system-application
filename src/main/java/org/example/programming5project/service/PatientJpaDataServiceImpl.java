@@ -7,7 +7,6 @@ import org.example.programming5project.exceptions.PatientNotFoundException;
 import org.example.programming5project.repository.DoctorJpaDataRepository;
 import org.example.programming5project.repository.MedicalRecordRepository;
 import org.example.programming5project.repository.PatientJpaDataRepository;
-import org.example.programming5project.service.PatientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
@@ -16,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Uses JpaDataRepositories
@@ -106,6 +106,21 @@ public class PatientJpaDataServiceImpl implements PatientService {
     public Patient findPatientWithMedicalRecords(String patientId) {
         return patientRepository.findPatientWithMedicalRecords(patientId)
                 .orElseThrow(() -> new PatientNotFoundException("Patient with ID " + patientId + " not found"));
+    }
+    @Override
+    public boolean updatePatientDetails(String patientId, double newBillingAmount, LocalDate newAdmissionDate) {
+        Optional<Patient> optionalPatient = patientRepository.findById(patientId);
+
+        if (optionalPatient.isEmpty()) {
+            return false; // Return false if patient is not found
+        }
+
+        Patient patient = optionalPatient.get();
+        patient.setBillingAmount(newBillingAmount);
+        patient.setAdmissionDate(newAdmissionDate);
+
+        patientRepository.save(patient);
+        return true; // Return true if update was successful
     }
 
 }

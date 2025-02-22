@@ -13,7 +13,6 @@ public record PatientDto(String patientId,
                          LocalDate admissionDate,
                          double billingAmount) {
 
-    //fromEntity method converts a Patient entity into a PatientDto.
     public static PatientDto fromEntity(Patient patient) {
         return new PatientDto(
                 patient.getPatientId(),

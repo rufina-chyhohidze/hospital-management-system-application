@@ -16,4 +16,5 @@ public interface PatientService {
     List<Patient> getPatientsForDoctor(int doctorId);
     List<Doctor> getDoctorsForPatient(String patientId);
     Patient findPatientWithMedicalRecords(String patientId);
+    boolean updatePatientDetails(String patientId, double newBillingAmount, LocalDate newAdmissionDate);
 }

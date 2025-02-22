@@ -6,7 +6,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface PatientMapper {
-    @Mapping(target = "patientId", ignore = true) // Ignore ID since it's auto-generated
+    @Mapping(target = "patientId", ignore = true)
     Patient toEntity(AddPatientDto addPatientDto);
 
     PatientDto toDto(Patient patient);

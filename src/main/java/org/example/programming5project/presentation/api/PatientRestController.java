@@ -6,6 +6,7 @@ import org.example.programming5project.exceptions.PatientNotFoundException;
 import org.example.programming5project.presentation.api.dtos.AddPatientDto;
 import org.example.programming5project.presentation.api.dtos.PatientDto;
 import org.example.programming5project.presentation.api.dtos.PatientMapper;
+import org.example.programming5project.presentation.api.dtos.UpdatePatientDto;
 import org.example.programming5project.service.PatientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,6 +68,22 @@ public class PatientRestController {
         patientService.addPatient(patient);
         return ResponseEntity.status(HttpStatus.CREATED).body(patientMapper.toDto(patient));
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> updatePatient(
+            @PathVariable String id,
+            @RequestBody @Valid UpdatePatientDto updatePatientDto) {
+
+        boolean isUpdated = patientService.updatePatientDetails(id,
+                updatePatientDto.billingAmount(), updatePatientDto.admissionDate());
+
+        if (isUpdated) {
+            return ResponseEntity.noContent().build(); // 204
+        } else {
+            return ResponseEntity.notFound().build(); // 404
+        }
+    }
+
 
 
 }
