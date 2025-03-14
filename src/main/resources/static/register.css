@@ -1,0 +1,19 @@
+.custom-card {
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 10px;
+    background: #f8f9fa;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+}
+
+.custom-card .form-control {
+    padding: 8px;
+    font-size: 14px;
+}
+
+.custom-card .btn {
+    padding: 8px 16px;
+    font-size: 14px;
+}
