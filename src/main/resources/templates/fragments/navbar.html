@@ -26,28 +26,30 @@
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/patients" th:text="#{navbar.patients}">All Patients</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/doctors" th:text="#{navbar.doctors}">All Doctors</a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/hospitals" th:text="#{navbar.hospitals}">Hospitals</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/patients/add" th:text="#{navbar.addPatient}">Add Patient</a>
+                    <li class="nav-item" th:unless="${#authorization.expression('isAuthenticated()')}">
+                        <a class="nav-link" href="/hospitals/add" th:text="#{navbar.addHospital}">Add Hospital</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" th:unless="${#authorization.expression('isAuthenticated()')}">
                         <a class="nav-link" href="/doctors/add" th:text="#{navbar.addDoctor}">Add Doctor</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/hospitals/add" th:text="#{navbar.addHospital}">Add Hospital</a>
+
+                    <!-- Only for logged-in doctors -->
+                    <li class="nav-item" th:if="${#authorization.expression('hasRole(''DOCTOR'')')}">
+                        <a class="nav-link" href="/patients" th:text="#{navbar.patients}">All Patients</a>
+                    </li>
+                    <li class="nav-item" th:if="${#authorization.expression('hasRole(''DOCTOR'')')}">
+                        <a class="nav-link" href="/doctors" th:text="#{navbar.doctors}">All Doctors</a>
+                    </li>
+                    <li class="nav-item" th:if="${#authorization.expression('hasRole(''DOCTOR'')')}">
+                        <a class="nav-link" href="/patients/add" th:text="#{navbar.addPatient}">Add Patient</a>
                     </li>
                 </ul>
 
-                <!-- User Authentication Section -->
                 <ul class="navbar-nav ms-auto">
+
                     <!-- If authenticated -->
                     <li class="nav-item" th:if="${#authorization.expression('isAuthenticated()')}">
                         <span class="navbar-text text-white me-2">
@@ -62,11 +64,10 @@
                         <a class="btn btn-outline-light btn-sm" th:href="@{/register}">Register</a>
                     </li>
                 </ul>
-
             </div>
         </nav>
     </div>
 </div>
-
 </body>
 </html>
+

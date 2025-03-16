@@ -20,7 +20,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // Temporarily disable CSRF
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/login", "/register", "/css/**", "/webjars/**", "/js/**").permitAll()
-                        .requestMatchers("/hospitals/**", "/patients/").authenticated()
+                        .requestMatchers("/hospitals/**", "/hospitals/add", "/doctors/add").permitAll()
+                        .requestMatchers("/patients/**", "/doctors/**").hasRole("DOCTOR")
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
