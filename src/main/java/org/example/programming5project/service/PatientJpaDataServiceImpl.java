@@ -3,13 +3,18 @@ package org.example.programming5project.service;
 import org.example.programming5project.domain.Doctor;
 import org.example.programming5project.domain.MedicalRecord;
 import org.example.programming5project.domain.Patient;
+import org.example.programming5project.domain.User;
 import org.example.programming5project.exceptions.PatientNotFoundException;
 import org.example.programming5project.repository.DoctorJpaDataRepository;
 import org.example.programming5project.repository.MedicalRecordRepository;
 import org.example.programming5project.repository.PatientJpaDataRepository;
+import org.example.programming5project.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,11 +34,13 @@ public class PatientJpaDataServiceImpl implements PatientService {
     private final PatientJpaDataRepository patientRepository;
     private final DoctorJpaDataRepository doctorRepository;
     private final MedicalRecordRepository medicalRecordRepository;
+    private final UserRepository userRepository;
 
-    public PatientJpaDataServiceImpl(PatientJpaDataRepository patientRepository, DoctorJpaDataRepository doctorRepository, MedicalRecordRepository medicalRecordRepository) {
+    public PatientJpaDataServiceImpl(PatientJpaDataRepository patientRepository, DoctorJpaDataRepository doctorRepository, MedicalRecordRepository medicalRecordRepository, UserRepository userRepository) {
         this.patientRepository = patientRepository;
         this.doctorRepository = doctorRepository;
         this.medicalRecordRepository = medicalRecordRepository;
+        this.userRepository = userRepository;
     }
 
 
@@ -57,7 +64,14 @@ public class PatientJpaDataServiceImpl implements PatientService {
 
     @Override
     public void addPatient(Patient patient) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        User creator = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        patient.setCreator(creator);
         patientRepository.save(patient);
+
     }
 
     @Override

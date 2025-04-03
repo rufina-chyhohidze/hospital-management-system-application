@@ -1,6 +1,10 @@
+import { getCsrf} from './util/csrf.js'
 document.addEventListener("DOMContentLoaded", function () {
+    const { token, header } = getCsrf();
     const addPatientForm = document.getElementById("addPatientForm");
     const patientsTableBody = document.getElementById("patientsTableBody");
+
+
 
     addPatientForm.addEventListener("submit", async function (event) {
         event.preventDefault();
@@ -18,7 +22,8 @@ document.addEventListener("DOMContentLoaded", function () {
             method: "POST",
             headers: {
                 "Accept": "application/json",
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                [header]: token
             },
             body: JSON.stringify(patientData)
         });
@@ -103,7 +108,8 @@ document.addEventListener("DOMContentLoaded", function () {
             method: "PATCH",
             headers: {
                 "Accept": "application/json",
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                [header]: token
             },
             body: JSON.stringify({
                 admissionDate: admissionDate,
@@ -129,7 +135,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     async function deletePatient(patientId, tableRow) {
         try {
-            const response = await fetch(`/api/patients/${patientId}`, { method: "DELETE" });
+            const response = await fetch(`/api/patients/${patientId}`, { method: "DELETE",
+            headers:{
+                [header]: token
+            }});
 
             if (response.status === 204) {
                 tableRow.remove();

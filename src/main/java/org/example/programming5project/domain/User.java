@@ -15,19 +15,21 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    private String role;
-
     @OneToOne
     private Doctor doctor;
+
+    @Enumerated(EnumType.STRING)
+    private UserRole userRole;
+
 
     public User() {
     }
 
-    public User(Long id, String username, String password, String role, Doctor doctor) {
+    public User(Long id, String username, String password, UserRole userRole, Doctor doctor) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.role = role;
+        this.userRole = userRole;
         this.doctor = doctor;
     }
 
@@ -55,14 +57,12 @@ public class User {
         this.password = password;
     }
 
-    public String getRole() {
-        return role;
+    public UserRole getUserRole() {
+        return userRole;
     }
-
-    public void setRole(String role) {
-        this.role = role;
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
     }
-
     public Doctor getDoctor() {
         return doctor;
     }

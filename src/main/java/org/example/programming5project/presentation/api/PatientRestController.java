@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,19 +44,28 @@ public class PatientRestController {
         return ResponseEntity.ok(patientDtos);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('DOCTOR') and #id == authentication.name)")
     @DeleteMapping("/{patientId}")
-    public ResponseEntity<Void> deletePatient(@PathVariable String patientId) {
+    public ResponseEntity<?> deletePatient(@PathVariable String patientId) {
         try {
-            patientService.findPatientById(patientId);
-        } catch (PatientNotFoundException ex) {
-            logger.warn("Patient with ID {} not found.", patientId);
-            return ResponseEntity.notFound().build();//404
-        }
+            Patient patient = patientService.findPatientById(patientId);
 
-        patientService.removePatient(patientId);
-        logger.info("Patient with ID {} deleted.", patientId);
-        return ResponseEntity.noContent().build();//204
+            String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+            boolean isAdmin = SecurityContextHolder.getContext().getAuthentication().getAuthorities()
+                    .stream()
+                    .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+            if (!currentUsername.equals(patient.getCreator().getUsername()) && !isAdmin) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to delete this patient."); // 403
+            }
+            patientService.removePatient(patientId);
+            return ResponseEntity.noContent().build(); // 204
+
+        } catch (PatientNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Patient with ID " + patientId + " not found."); // 404
+        }
     }
+
 
 
     @PostMapping
@@ -66,7 +77,7 @@ public class PatientRestController {
         }
 
         patientService.addPatient(patient);
-        return ResponseEntity.status(HttpStatus.CREATED).body(patientMapper.toDto(patient));
+        return ResponseEntity.status(HttpStatus.CREATED).body(patientMapper.toDto(patient));//201
     }
 
     @PatchMapping("/{id}")

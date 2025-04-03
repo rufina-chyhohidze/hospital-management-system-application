@@ -36,6 +36,10 @@ public class Patient {
     @JoinColumn(name = "hospital_id", nullable = true)
     private Hospital hospital;
 
+    @ManyToOne
+    @JoinColumn(name = "creator_id")
+    private User creator;
+
     public Patient(String firstName, String lastName, int age, Gender gender, String patientId, double billingAmount, LocalDate admissionDate,Hospital hospital) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -97,6 +101,12 @@ public class Patient {
         return admissionDate;
     }
 
+    public User getCreator() {
+        return creator;
+    }
+    public void setCreator(User creator) {
+        this.creator = creator;
+    }
     public List<MedicalRecord> getMedicalRecords() {
         return medicalRecords;
     }
@@ -104,6 +114,8 @@ public class Patient {
     public void setMedicalRecords(List<MedicalRecord> medicalRecords) {
         this.medicalRecords = medicalRecords;
     }
+
+
 
     @Override
     public String toString() {

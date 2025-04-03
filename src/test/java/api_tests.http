@@ -5,6 +5,8 @@ Accept: application/json
 
 ### to delete a patient
 DELETE http://localhost:8080/api/patients/P001
+X-CSRF-TOKEN: pWNMY5G2du5vBi-bnEVqvsizTFAXxrQGhkBLWd80cDeAA96YwQd-VKGEEoxCNxqi_mhehvGBYTEj94Ar4HV9arwHEwDlMe6s
+Cookie: JSESSIONID=6F33C167CBEFE90DEAFC9D5B5D839165
 //after running, run previous one and youll see that patient
 //with this id is deleted.
 
@@ -15,23 +17,30 @@ Accept: application/json
 
 ### to add patient
 POST http://localhost:8080/api/patients
-Accept: application/json
-Content-Type:application/json
+Content-Type: application/json
+X-CSRF-TOKEN: 8bL7IpQHr6w7r4M77uBj6V58_Uhqk_XKPIK9hpWNQ-mhRRStktPMFvcxm5UWzeYIi81X3jxN0CpY8MbnWeGLs6zpId2RdieZ
+Cookie: JSESSIONID=650FDAA9B87AE63F063C565CFAF075F7
+
 
 {
-  "firstName": "Rick",
-  "lastName": "Doe",
-  "age": 20,
+  "firstName": "Test21",
+  "lastName": "Patient",
+  "age": 40,
   "gender": "MALE",
-  "admissionDate": "2025-02-05",
-  "billingAmount": 5000.0
+  "admissionDate": "2025-04-03",
+  "billingAmount": 1234.56
 }
-
 ###
+# @no-redirect
+# @no-cookie-jar
 PATCH http://localhost:8080/api/patients/P001
 Content-Type: application/json
+Cookie: JSESSIONID=650FDAA9B87AE63F063C565CFAF075F7
+X-CSRF-TOKEN: ZlZqGbBq6guP3oQEvZLe57iRSRe5V9auR-SAbr9rDkJ7eNNmvhunAX3n5EDXR8jd9t_TPzTaEZshmx33HykNIOZzg053tB5
 
 {
-  "billingAmount": 4500.0,
+  "billingAmount": 5000,
   "admissionDate": "2025-03-01"
 }
+
+

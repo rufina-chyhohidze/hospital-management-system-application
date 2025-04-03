@@ -1,4 +1,6 @@
+import { getCsrf} from './util/csrf.js'
 document.addEventListener("DOMContentLoaded", function () {
+    const { token, header } = getCsrf();
     const deleteButtons = document.querySelectorAll(".delete-patient-btn");
 
     deleteButtons.forEach(button => {
@@ -8,7 +10,10 @@ document.addEventListener("DOMContentLoaded", function () {
             const tableRow = event.target.closest("tr");
             const patientId = tableRow.getAttribute("data-patient-id");
 
-            const response = await fetch(`/api/patients/${patientId}`, { method: "DELETE" });
+            const response = await fetch(`/api/patients/${patientId}`, { method: "DELETE",
+                headers:{
+                    [header]: token
+        }});
 
             if (response.status === 204) {
                 console.log(`Patient ${patientId} deleted successfully.`);

@@ -26,7 +26,7 @@ public record AddPatientDto(
         @NotNull(message = "Gender is required")
         Gender gender,
 
-        @NotNull
+
         LocalDate admissionDate,
         @NotNull
         double billingAmount

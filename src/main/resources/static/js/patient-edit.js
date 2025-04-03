@@ -1,4 +1,6 @@
+import {getCsrf} from './util/csrf.js'
 document.addEventListener("DOMContentLoaded", function () {
+    const { token, header } = getCsrf();
     const patientsTableBody = document.getElementById("patientsTableBody");
 
     patientsTableBody.addEventListener("click", function (event) {
@@ -43,8 +45,11 @@ document.addEventListener("DOMContentLoaded", function () {
             method: "PATCH",
             headers: {
                 "Accept": "application/json",
-                "Content-Type": "application/json"
-            },
+                "Content-Type": "application/json",
+                [header]: token
+
+
+    },
             body: JSON.stringify({
                 admissionDate: admissionDate,
                 billingAmount: parseFloat(billingAmount)

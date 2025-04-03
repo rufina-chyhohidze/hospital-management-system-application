@@ -1,6 +1,7 @@
 package org.example.programming5project.service;
 
 import org.example.programming5project.domain.User;
+import org.example.programming5project.domain.UserRole;
 import org.example.programming5project.presentation.mvc.mvcdto.UserDto;
 import org.example.programming5project.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,7 +29,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = new User();
         user.setUsername(userDto.username());
         user.setPassword(passwordEncoder.encode(userDto.password()));
-        user.setRole("DOCTOR"); // Default role
+        user.setUserRole(UserRole.ADMIN); // Default role
         userRepository.save(user);
     }
 
@@ -40,7 +41,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
-                .roles(user.getRole())
+                .roles(user.getUserRole().name())
                 .build();
     }
 }

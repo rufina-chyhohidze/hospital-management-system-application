@@ -2,7 +2,9 @@ package org.example.programming5project.presentation.securityConfig;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -17,11 +19,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Temporarily disable CSRF
+                .csrf(Customizer.withDefaults())
+                // .csrf(csrf -> csrf.disable()) // Temporarily disable CSRF
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/login", "/register", "/css/**", "/webjars/**", "/js/**").permitAll()
-                        .requestMatchers("/hospitals/**", "/hospitals/add", "/doctors/add").permitAll()
-                        .requestMatchers("/patients/**", "/doctors/**").hasRole("DOCTOR")
+                        .requestMatchers("/patients/**").hasAnyRole("ADMIN", "DOCTOR")
+                            .requestMatchers("/doctors/**").hasAnyRole("ADMIN", "DOCTOR")
+                        .requestMatchers(HttpMethod.GET, "/api/hospitals").permitAll()
+
+                        .requestMatchers("/hospitals/**").permitAll()
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
