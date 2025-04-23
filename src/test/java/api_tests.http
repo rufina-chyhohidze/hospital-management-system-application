@@ -4,9 +4,9 @@ Accept: application/json
 
 
 ### to delete a patient
-DELETE http://localhost:8080/api/patients/P001
-X-CSRF-TOKEN: pWNMY5G2du5vBi-bnEVqvsizTFAXxrQGhkBLWd80cDeAA96YwQd-VKGEEoxCNxqi_mhehvGBYTEj94Ar4HV9arwHEwDlMe6s
-Cookie: JSESSIONID=6F33C167CBEFE90DEAFC9D5B5D839165
+DELETE http://localhost:8080/api/patients/P003
+X-CSRF-TOKEN: Mt3nEa5QUphUJ_IO-5HPLcVkSNx3UaYkBFmxju8SUFwGvmK_AunTJpxoYat5Fpc-z7z7H_xRZb0SMsIJYjjT7IslZz43iFKN
+Cookie: JSESSIONID=A2DBAE9BD9D55F8CD1D9F5145182D51B
 //after running, run previous one and youll see that patient
 //with this id is deleted.
 
@@ -18,12 +18,12 @@ Accept: application/json
 ### to add patient
 POST http://localhost:8080/api/patients
 Content-Type: application/json
-X-CSRF-TOKEN: 8bL7IpQHr6w7r4M77uBj6V58_Uhqk_XKPIK9hpWNQ-mhRRStktPMFvcxm5UWzeYIi81X3jxN0CpY8MbnWeGLs6zpId2RdieZ
-Cookie: JSESSIONID=650FDAA9B87AE63F063C565CFAF075F7
+X-CSRF-TOKEN: qnbi80IFl5HVx7pCdyAXaVcPAoW1dd8WNuDcLULyOUht7NyvmELQwHEyoqj4945wEg0jCGNsL-TTTLs7AtDuG3vDDS5Viu2d
+Cookie: JSESSIONID=71A7FF39C1A4AD4D7825112B20FA7CF9
 
 
 {
-  "firstName": "Test21",
+  "firstName": "Test2",
   "lastName": "Patient",
   "age": 40,
   "gender": "MALE",
@@ -33,10 +33,10 @@ Cookie: JSESSIONID=650FDAA9B87AE63F063C565CFAF075F7
 ###
 # @no-redirect
 # @no-cookie-jar
-PATCH http://localhost:8080/api/patients/P001
+PATCH http://localhost:8080/api/patients/P006
 Content-Type: application/json
-Cookie: JSESSIONID=650FDAA9B87AE63F063C565CFAF075F7
-X-CSRF-TOKEN: ZlZqGbBq6guP3oQEvZLe57iRSRe5V9auR-SAbr9rDkJ7eNNmvhunAX3n5EDXR8jd9t_TPzTaEZshmx33HykNIOZzg053tB5
+Cookie: JSESSIONID=A2DBAE9BD9D55F8CD1D9F5145182D51B
+X-CSRF-TOKEN: Mt3nEa5QUphUJ_IO-5HPLcVkSNx3UaYkBFmxju8SUFwGvmK_AunTJpxoYat5Fpc-z7z7H_xRZb0SMsIJYjjT7IslZz43iFKN
 
 {
   "billingAmount": 5000,

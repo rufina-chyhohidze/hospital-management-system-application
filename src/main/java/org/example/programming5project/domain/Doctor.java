@@ -13,6 +13,9 @@ import java.util.*;
  * Hospital (One-to-Many with Doctor)
  * A Hospital can employ many Doctors. Each Doctor works in only one Hospital.
  */
+// TODO: Doctors should also have specific permissions/access from each other
+    // TODO: Doctor CAN ONLY delete patients related to him
+    // todo delete button only on patients doctor can delete
 @Entity
 @Table(name = "doctors")
 public class Doctor {
@@ -35,10 +38,10 @@ public class Doctor {
     @OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY)
     private List<MedicalRecord> medicalRecords = new ArrayList<>();
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hospital_id", nullable = true)
+   // @JoinColumn(name = "hospital_id", nullable = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Hospital hospital;
-
+// zill be user field
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;

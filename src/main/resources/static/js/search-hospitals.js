@@ -1,4 +1,5 @@
-document.addEventListener("DOMContentLoaded", function () {
+
+// TODO: Remove unnecessary domcontentloaded wait, use defer in script tag instead
     const searchTermInput = document.getElementById('searchTerm');
     const tableBody = document.querySelector('tbody');
 
@@ -27,6 +28,4 @@ document.addEventListener("DOMContentLoaded", function () {
             tableBody.innerHTML = "";
         }
     }
-
     searchTermInput.addEventListener('input', searchHospitals);
-});

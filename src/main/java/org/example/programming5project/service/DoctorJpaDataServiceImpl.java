@@ -23,6 +23,7 @@ import java.util.List;
  */
 @Service
         //("doctorJpaDataServiceImpl")
+// TODO REMOVE UNNECESSARY PROFILE
 @Profile("jpa")
 @Transactional
 public class DoctorJpaDataServiceImpl implements DoctorService {

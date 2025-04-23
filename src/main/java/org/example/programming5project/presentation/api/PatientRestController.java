@@ -44,7 +44,7 @@ public class PatientRestController {
         return ResponseEntity.ok(patientDtos);
     }
 
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('DOCTOR') and #id == authentication.name)")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('DOCTOR') and #patientId == authentication.name)")
     @DeleteMapping("/{patientId}")
     public ResponseEntity<?> deletePatient(@PathVariable String patientId) {
         try {

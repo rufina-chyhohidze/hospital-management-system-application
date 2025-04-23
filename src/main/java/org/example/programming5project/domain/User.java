@@ -2,6 +2,9 @@ package org.example.programming5project.domain;
 
 import jakarta.persistence.*;
 
+// TODO: User is an indpendent entity, it doesnt have relations with other domain classes directly
+// TODO: One of the domain entities must have a relationship with user (one way relationship not bi-directional)
+// ad username and password to doctor, use inheritance and make user extend and doctor
 @Entity
 @Table(name = "users")
 public class User {
@@ -16,7 +19,7 @@ public class User {
     private String password;
 
     @OneToOne
-    private Doctor doctor;
+    private Doctor doctor; //put it to doctor class.o r one to many
 
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
@@ -25,13 +28,6 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String username, String password, UserRole userRole, Doctor doctor) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.userRole = userRole;
-        this.doctor = doctor;
-    }
 
     public Long getId() {
         return id;

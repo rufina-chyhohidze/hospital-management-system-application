@@ -6,7 +6,6 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 import java.util.*;
-
 /**
  * Patient (Many-to-Many with Doctor)
  * A Patient can have many Doctors assigned. Each Doctor can have many Patients.
@@ -32,6 +31,7 @@ public class Patient {
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
     private List<MedicalRecord> medicalRecords = new ArrayList<>();
     @ManyToOne(fetch = FetchType.LAZY)
+    // todo check if neccessary
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "hospital_id", nullable = true)
     private Hospital hospital;

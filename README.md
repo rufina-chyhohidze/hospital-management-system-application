@@ -15,11 +15,21 @@ https://gitlab.com/kdg-ti/programming-5/projects-24-25/acs202/rufina.chyhohidze/
 - **Student ID**: 
 - **Academic Year**: 2024-2025
 - **Group**: ACS202
-- 
+
+
+---
+// TODO: fix markdown
+---
 ## ** Project Setup & Build Instructions**
 - PostgreSQL database (with correct schema)
 - **To be able to run the application** Check the database credentials in docker-compose.yml file in root of the project
 
+---
+// todo add login users info so teacher can login with password too
+// TODO EXAPLIN WHAT PERSMIISON EACH USERS HAVE
+EXPLAIN TEST PROFILE FOR TESTIGN WEEK
+---
+// MORE DETAIL:
 ## **Main entities**
 - Doctor
 - Hospital One-to-Many with doctor

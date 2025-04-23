@@ -4,7 +4,7 @@ import org.example.programming5project.presentation.mvc.mvcdto.UserDto;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 
-public interface UserService extends UserDetailsService {
+public interface UserService  {
     void registerUser(UserDto userDto);
 }
 

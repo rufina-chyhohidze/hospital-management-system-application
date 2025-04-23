@@ -1,5 +1,5 @@
 import {getCsrf} from './util/csrf.js'
-document.addEventListener("DOMContentLoaded", function () {
+
     const { token, header } = getCsrf();
     const patientsTableBody = document.getElementById("patientsTableBody");
 
@@ -33,7 +33,6 @@ document.addEventListener("DOMContentLoaded", function () {
         editButton.classList.add("btn-success");
         editButton.innerHTML = `<i class="bi bi-check-lg"></i> Save`;
 
-        // Add event listener to save changes
         editButton.removeEventListener("click", () => enableEditing(tableRow));
         editButton.addEventListener("click", () =>
             updatePatient(patientId, admissionDateInput.value, billingAmountInput.value, tableRow)
@@ -47,8 +46,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
                 [header]: token
-
-
     },
             body: JSON.stringify({
                 admissionDate: admissionDate,
@@ -65,11 +62,8 @@ document.addEventListener("DOMContentLoaded", function () {
             editButton.classList.remove("btn-success");
             editButton.classList.add("btn-warning");
             editButton.innerHTML = `<i class="bi bi-pencil"></i> Edit`;
-
-            editButton.removeEventListener("click", updatePatient);
             editButton.addEventListener("click", () => enableEditing(tableRow));
         } else {
             alert("Failed to update patient. Please try again.");
         }
     }
-});

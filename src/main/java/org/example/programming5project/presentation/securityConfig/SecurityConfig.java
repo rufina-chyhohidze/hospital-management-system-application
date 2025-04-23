@@ -19,8 +19,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(Customizer.withDefaults())
-                // .csrf(csrf -> csrf.disable()) // Temporarily disable CSRF
+                // todo what is this, remove it
+               // .csrf(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/login", "/register", "/css/**", "/webjars/**", "/js/**").permitAll()
                         .requestMatchers("/patients/**").hasAnyRole("ADMIN", "DOCTOR")

@@ -109,6 +109,8 @@ public class DoctorController {
         doctor.setDepartment(Department.valueOf(doctorForm.getDepartment().toUpperCase()));
         doctor.setHireDate(doctorForm.getHireDate());
         doctor.setGender(Gender.valueOf(doctorForm.getGender().toUpperCase()));
+        //doctor.setUser
+        //add @AuthenticationPrincipal
 
         Hospital hospital = hospitalService.findById(doctorForm.getHospitalId());
         doctor.setHospital(hospital);
