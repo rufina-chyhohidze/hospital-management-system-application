@@ -3,71 +3,179 @@
 ## Project Overview
 This is a **Spring Boot** application that manages **hospitals, doctors, patients, and medical records**. The application allows **CRUD operations** for all entities and includes **RESTful APIs** with dynamic UI updates using **JavaScript & Fetch API**.
 
-### **How to Build & Run**
-#### ** Clone the Repository**
-```sh
-https://gitlab.com/kdg-ti/programming-5/projects-24-25/acs202/rufina.chyhohidze/spring-backend.git
-```
-##  Course Information
+---
+
+## 📚 Course Information
 - **Course Name**: Programming 5
 - **Student Name**: Chyhohidze Rufina
 - **KdG Email**: rufina.chyhohidze@student.kdg.be
-- **Student ID**: 
-- **Academic Year**: 2024-2025
+- **Academic Year**: 2025-2026
 - **Group**: ACS202
 
+---
 
----
-// TODO: fix markdown
----
-## ** Project Setup & Build Instructions**
-- PostgreSQL database (with correct schema)
-- **To be able to run the application** Check the database credentials in docker-compose.yml file in root of the project
-
----
-// todo add login users info so teacher can login with password too
-// TODO EXAPLIN WHAT PERSMIISON EACH USERS HAVE
-EXPLAIN TEST PROFILE FOR TESTIGN WEEK
----
-// MORE DETAIL:
-## **Main entities**
-- Doctor
-- Hospital One-to-Many with doctor
-  - Medical Record (doctor (Many-to-One)
-                   patient (Many-to-One))
+## 📌 Main Entities
+- Hospital (One-to-Many with Doctors)
+- Doctor (Many-to-One with Hospital)
 - Patient
+- MedicalRecord (Many-to-One with Doctor and Patient)
 
-## **Week 2 - API Requests & Responses**
-- ### To get all patients
+---
+
+## 👤 Seeded Users
+
+| Username | Password | Role   |
+|----------|----------|--------|
+| admin    | admin123 | ADMIN  |
+| user     | user123  | USER   |
+
+> These users can be used to log in during testing.
+
+---
+
+## 🔑 Authentication Access
+
+- 🔓 [Public Page (Hospitals)](http://localhost:8080/hospitals) – accessible by anyone
+- 🔐 [Patients Page](http://localhost:8080/patients) – requires login (ADMIN or USER)
+
+---
+
+## 🔐 Roles & Permissions
+
+### 👤 Unauthenticated Users:
+- Can **view hospitals**.
+- Cannot **view, edit, delete, or create** patients, doctors, or medical records.
+
+### 👩‍⚕️ USER (user):
+- Can **view all patients**.
+- Can **add** a new patient.
+- Can **edit or delete only the patients they created**.
+- Cannot **modify or delete patients created by others**.
+
+### 👑 ADMIN (admin):
+- Can **view, add, edit, delete all patients**.
+- Can **access additional admin-only functionality**.
+
+---
+
+## 🔒 Hidden Information for Unauthenticated Users
+
+- Pages like [Patients](http://localhost:8080/patients) are not accessible.
+- All `Edit` and `Delete` buttons are hidden unless the user is authenticated.
+
+---
+
+## 👥 User Relations
+
+- A `User` is associated with the `Patient` entity as the **creator**.
+- Only the **creator** of a patient (or an ADMIN) can **edit/delete** the patient.
+- This logic is enforced both on **backend API level** and on the **frontend UI**.
+
+---
+
+## How to Build & Run
+### Clone the Repository
+```sh
+https://gitlab.com/kdg-ti/programming-5/projects-24-25/acs202/rufina.chyhohidze/spring-backend.git
+```
+
+### Project Setup & Build Instructions
+- Requires PostgreSQL database (configured via `docker-compose.yml`)
+- Check database credentials before running
+
+
+
+## 📡 API Examples
+
+### Week 2 - API Requests & Responses
+
+#### ✅ Get all patients
 ```
 GET http://localhost:8080/api/patients
 ```
-- Fetching All Patients - status 200 OK
--  ### To delete a patient
+- Response: 200 OK
+
+#### ❌ Delete patient
 ```
 DELETE http://localhost:8080/api/patients/P001
 ```
-- Successful deletion - status 204
-- Patient not found for deletion - status 404
-- ### To search for a hospital
+- 204 No Content if deleted
+- 404 Not Found if patient not found
+
+#### 🔎 Search hospital
 ```
 GET http://localhost:8080/api/hospitals?search=uptown
 ```
-- Successful search - status 200
-- No content - status 204 
+- 200 OK or 204 No Content
 
-## **Week 3 - Addition API and updating
-- ### To add patient
+---
+
+### Week 3 - Add & Update Patient
+
+#### ➕ Add Patient
 ```
 POST http://localhost:8080/api/patients
 ```
-- Successful addition - status 201
-- Bad request - status 400
-### To update patients billing amount or admission date
-```
-  PATCH http://localhost:8080/api/patients/P001
-```
-- Successful update - status 204
-- Patient not found for update - status 404
-- Bad request (not corresponds to validation) - status 400
+- 201 Created
+- 400 Bad Request if invalid
 
+#### 📝 Update patient billing or date
+```
+PATCH http://localhost:8080/api/patients/P001
+```
+- 204 No Content
+- 404 Not Found
+- 400 Validation Failed
+
+---
+
+## 🔍 Test API Calls
+
+### Get all patients
+```
+GET http://localhost:8080/api/patients
+Accept: application/json
+```
+
+### Delete a patient
+```
+DELETE http://localhost:8080/api/patients/P005
+X-CSRF-TOKEN: <token>
+Cookie: JSESSIONID=<session_id>
+```
+
+### Search hospital
+```
+GET http://localhost:8080/api/hospitals?search=uptown
+Accept: application/json
+```
+
+### Add patient
+```
+POST http://localhost:8080/api/patients
+Content-Type: application/json
+X-CSRF-TOKEN: <token>
+Cookie: JSESSIONID=<session_id>
+
+{
+  "firstName": "Test2",
+  "lastName": "Patient",
+  "age": 40,
+  "gender": "MALE",
+  "admissionDate": "2025-04-03",
+  "billingAmount": 1234.56
+}
+```
+
+### Update patient
+```
+PATCH http://localhost:8080/api/patients/P006
+Content-Type: application/json
+X-CSRF-TOKEN: <token>
+Cookie: JSESSIONID=<session_id>
+
+{
+  "billingAmount": 5000,
+  "admissionDate": "2025-03-01"
+}
+```

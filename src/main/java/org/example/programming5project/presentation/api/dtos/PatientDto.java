@@ -11,7 +11,8 @@ public record PatientDto(String patientId,
                          int age,
                          Gender gender,
                          LocalDate admissionDate,
-                         double billingAmount) {
+                         double billingAmount,
+                         Long creatorId) {
 
     public static PatientDto fromEntity(Patient patient) {
         return new PatientDto(
@@ -21,7 +22,8 @@ public record PatientDto(String patientId,
                 patient.getAge(),
                 patient.getGender(),
                 patient.getAdmissionDate(),
-                patient.getBillingAmount()
+                patient.getBillingAmount(),
+                patient.getCreator() != null ? patient.getCreator().getId() : null
         );
     }
 }

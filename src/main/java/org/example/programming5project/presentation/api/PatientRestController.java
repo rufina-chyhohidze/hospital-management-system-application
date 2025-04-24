@@ -2,17 +2,21 @@ package org.example.programming5project.presentation.api;
 
 import jakarta.validation.Valid;
 import org.example.programming5project.domain.Patient;
+import org.example.programming5project.domain.User;
 import org.example.programming5project.exceptions.PatientNotFoundException;
 import org.example.programming5project.presentation.api.dtos.AddPatientDto;
 import org.example.programming5project.presentation.api.dtos.PatientDto;
 import org.example.programming5project.presentation.api.dtos.PatientMapper;
 import org.example.programming5project.presentation.api.dtos.UpdatePatientDto;
 import org.example.programming5project.service.PatientService;
+import org.example.programming5project.service.UserService;
+import org.example.programming5project.service.security.UserDetailsImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,11 +31,13 @@ public class PatientRestController {
     private static final Logger logger = LoggerFactory.getLogger(PatientRestController.class);
     private final PatientService patientService;
     private final PatientMapper patientMapper;
+    private final UserService userService;
 
 
-    public PatientRestController(PatientService patientService, PatientMapper patientMapper) {
+    public PatientRestController(PatientService patientService, PatientMapper patientMapper, UserService userService) {
         this.patientService = patientService;
         this.patientMapper = patientMapper;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -44,39 +50,29 @@ public class PatientRestController {
         return ResponseEntity.ok(patientDtos);
     }
 
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('DOCTOR') and #patientId == authentication.name)")
     @DeleteMapping("/{patientId}")
-    public ResponseEntity<?> deletePatient(@PathVariable String patientId) {
-        try {
-            Patient patient = patientService.findPatientById(patientId);
+    public ResponseEntity<?> deletePatient(@PathVariable String patientId,
+                                           @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        Patient patient = patientService.findPatientById(patientId);
 
-            String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-            boolean isAdmin = SecurityContextHolder.getContext().getAuthentication().getAuthorities()
-                    .stream()
-                    .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
-
-            if (!currentUsername.equals(patient.getCreator().getUsername()) && !isAdmin) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to delete this patient."); // 403
-            }
-            patientService.removePatient(patientId);
-            return ResponseEntity.noContent().build(); // 204
-
-        } catch (PatientNotFoundException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Patient with ID " + patientId + " not found."); // 404
+        if (!patient.getCreator().getId().equals(userDetails.getUserId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only delete your own patients.");//403
         }
+        patientService.removePatient(patientId);
+        return ResponseEntity.noContent().build();//204
     }
 
 
-
     @PostMapping
-    public ResponseEntity<PatientDto> addPatient(@Valid @RequestBody AddPatientDto addPatientDto) {
+    public ResponseEntity<PatientDto> addPatient(@Valid @RequestBody AddPatientDto addPatientDto,@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        User creator = userService.findById(userDetails.getUserId());
         Patient patient = patientMapper.toEntity(addPatientDto);
-
         if (patient.getPatientId() == null || patient.getPatientId().isBlank()) {
             patient.setPatientId(UUID.randomUUID().toString());
         }
-
+        patient.setCreator(creator);
         patientService.addPatient(patient);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(patientMapper.toDto(patient));//201
     }
 
@@ -94,7 +90,5 @@ public class PatientRestController {
             return ResponseEntity.notFound().build(); // 404
         }
     }
-
-
 
 }

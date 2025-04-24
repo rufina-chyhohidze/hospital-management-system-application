@@ -27,9 +27,9 @@ INSERT INTO hospital_departments (hospital_id, departments) VALUES
 -- Insert admin user (creator for patients)
 INSERT INTO users (id, username, password, user_role)
 VALUES (1, 'admin', '$2a$12$ucFz4s/XXdApkjzjQK4T7.naea.W7PEZ/ey/GZIzMNgglH5fSq3C2', 'ADMIN'),
-       (2,'doctor','$2a$12$jgW/Wg7IgD8anTcwMvxXdO8Nxlyzi/nhviq.yOe42CT4D/S/PEoai','DOCTOR');
+       (2,'user','$2a$12$F7l2Xhr0coMIo6vo0040eu9ZUV6xdXjxDiqJXuWF5vwQxDc8MLSZ6','USER');
 -- 🔐 admin123
-    --doctor123
+    --user123
 
 -- Insert doctors
 INSERT INTO doctors (hire_date, license_number, salary, hospital_id, department, first_name, gender, last_name) VALUES

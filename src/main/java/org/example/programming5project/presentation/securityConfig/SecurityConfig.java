@@ -19,12 +19,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // todo what is this, remove it
-               // .csrf(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/login", "/register", "/css/**", "/webjars/**", "/js/**").permitAll()
-                        .requestMatchers("/patients/**").hasAnyRole("ADMIN", "DOCTOR")
-                            .requestMatchers("/doctors/**").hasAnyRole("ADMIN", "DOCTOR")
+                        .requestMatchers("/patients/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/hospitals").permitAll()
 
                         .requestMatchers("/hospitals/**").permitAll()
