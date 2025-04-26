@@ -14,7 +14,6 @@ import java.util.Optional;
 /**
  * uses JpaRepositories with additional query methods.
  */
-@Profile("jpa")
 @Repository
 public interface PatientJpaDataRepository  extends JpaRepository<Patient, String> {
     @Query("""

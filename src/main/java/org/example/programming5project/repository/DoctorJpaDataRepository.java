@@ -15,7 +15,6 @@ import java.util.Optional;
 /**
  * uses JpaRepositories with additional query methods.
  */
-@Profile("jpa")
 @Repository
 public interface DoctorJpaDataRepository extends JpaRepository<Doctor, Integer> {
     List<Doctor> findByDepartment(Department department);

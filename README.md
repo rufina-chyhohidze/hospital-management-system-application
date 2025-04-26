@@ -24,10 +24,12 @@ This is a **Spring Boot** application that manages **hospitals, doctors, patient
 
 ## 👤 Seeded Users
 
-| Username | Password | Role   |
-|----------|----------|--------|
-| admin    | admin123 | ADMIN  |
-| user     | user123  | USER   |
+| Username | Password | Role  |
+|----------|----------|-------|
+| admin    | admin123 | ADMIN |
+| user     | user123  | USER  |
+| admin2   | admin123 | ADMIN |
+    
 
 > These users can be used to log in during testing.
 

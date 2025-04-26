@@ -26,7 +26,6 @@ import java.util.Optional;
  * Uses JpaDataRepositories
  */
 @Service
-@Profile("jpa")
 @Transactional
 public class PatientJpaDataServiceImpl implements PatientService {
     private Logger logger = LoggerFactory.getLogger(PatientJpaDataServiceImpl.class);

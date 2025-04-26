@@ -22,9 +22,6 @@ import java.util.List;
  * Uses JpaDataRepositories
  */
 @Service
-        //("doctorJpaDataServiceImpl")
-// TODO REMOVE UNNECESSARY PROFILE
-@Profile("jpa")
 @Transactional
 public class DoctorJpaDataServiceImpl implements DoctorService {
     private Logger logger = LoggerFactory.getLogger(DoctorJpaDataServiceImpl.class);

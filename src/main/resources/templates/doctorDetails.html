@@ -47,12 +47,6 @@
                         </li>
                     </ul>
                     <a th:href="@{/doctors}" class="btn btn-primary">Back to Doctors</a>
-                    <form th:action="@{/doctors/delete/{licenseNumber}(licenseNumber=${doctor.licenseNumber})}" method="post" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this doctor?');">
-                        <button type="submit" class="btn btn-danger btn-sm">
-                            <i class="fas fa-trash"></i> Delete Doctor
-                        </button>
-                    </form>
-
                 </div>
             </div>
         </div>
