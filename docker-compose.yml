@@ -12,5 +12,18 @@ services:
             - '5050:5432'
         volumes:
             - db-data:/var/lib/postgresql/data
+    postgres_hospital-test_db:
+        image: postgres:17.2-alpine
+        restart: always
+        environment:
+            POSTGRES_DB: 'hospital-test'
+            POSTGRES_USER: 'spring'
+            POSTGRES_PASSWORD: 'spring'
+        ports:
+            - '5053:5432'
+        volumes:
+            - db-data-test:/var/lib/postgresql/data
+
 volumes:
     db-data:
+    db-data-test:
