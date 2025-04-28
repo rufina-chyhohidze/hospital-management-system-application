@@ -91,6 +91,13 @@ public class TestHelper {
     public UserRepository getUserRepository() {
         return userRepository;
     }
+    public PatientJpaDataRepository getPatientRepository() {
+        return patientRepository;
+    }
+
+    public MedicalRecordRepository getMedicalRecordRepository() {
+        return medicalRecordRepository;
+    }
 
     public void cleanUp() {
         medicalRecordRepository.deleteAll();
