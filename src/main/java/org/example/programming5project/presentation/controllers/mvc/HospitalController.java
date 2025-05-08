@@ -1,7 +1,7 @@
-package org.example.programming5project.presentation.mvc;
+package org.example.programming5project.presentation.controllers.mvc;
 
 import jakarta.validation.Valid;
-import org.example.programming5project.presentation.mvc.viewmodels.HospitalForm;
+import org.example.programming5project.presentation.controllers.mvc.viewmodels.HospitalForm;
 import org.example.programming5project.service.HospitalService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

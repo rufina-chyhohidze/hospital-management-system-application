@@ -32,6 +32,8 @@ dependencies {
     implementation("org.webjars:webjars-locator-core:0.48")
     implementation("org.mapstruct:mapstruct:1.6.3")
     annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
+    testImplementation ("org.springframework.security:spring-security-test")
+
 }
 
 tasks.withType<Test> {

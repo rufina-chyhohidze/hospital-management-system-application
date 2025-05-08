@@ -1,8 +1,8 @@
 package org.example.programming5project.service;
 
 import org.example.programming5project.domain.Hospital;
-import org.example.programming5project.presentation.api.dtos.HospitalDto;
-import org.example.programming5project.presentation.mvc.viewmodels.HospitalForm;
+import org.example.programming5project.presentation.controllers.api.dtos.HospitalDto;
+import org.example.programming5project.presentation.controllers.mvc.viewmodels.HospitalForm;
 
 import java.util.List;
 

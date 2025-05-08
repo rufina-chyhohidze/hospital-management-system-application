@@ -1,6 +1,6 @@
-package org.example.programming5project.presentation.api;
+package org.example.programming5project.presentation.controllers.api;
 
-import org.example.programming5project.presentation.api.dtos.HospitalDto;
+import org.example.programming5project.presentation.controllers.api.dtos.HospitalDto;
 import org.example.programming5project.service.HospitalService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

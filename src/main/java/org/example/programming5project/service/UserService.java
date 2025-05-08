@@ -1,8 +1,7 @@
 package org.example.programming5project.service;
 
 import org.example.programming5project.domain.User;
-import org.example.programming5project.presentation.mvc.mvcdto.UserDto;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.example.programming5project.presentation.controllers.mvc.mvcdto.UserDto;
 
 
 public interface UserService  {
