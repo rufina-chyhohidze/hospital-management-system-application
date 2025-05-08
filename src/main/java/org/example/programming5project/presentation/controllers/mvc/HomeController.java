@@ -1,4 +1,4 @@
-package org.example.programming5project.presentation.mvc;
+package org.example.programming5project.presentation.controllers.mvc;
 
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;

@@ -1,8 +1,8 @@
-package org.example.programming5project.presentation.mvc;
+package org.example.programming5project.presentation.controllers.mvc;
 
 import org.example.programming5project.domain.*;
 import org.example.programming5project.exceptions.DoctorNotFoundException;
-import org.example.programming5project.presentation.mvc.viewmodels.DoctorForm;
+import org.example.programming5project.presentation.controllers.mvc.viewmodels.DoctorForm;
 import org.example.programming5project.service.DoctorService;
 import org.example.programming5project.service.HospitalService;
 import org.example.programming5project.service.PatientService;

@@ -2,7 +2,7 @@ package org.example.programming5project.service;
 
 import org.example.programming5project.domain.User;
 import org.example.programming5project.domain.UserRole;
-import org.example.programming5project.presentation.mvc.mvcdto.UserDto;
+import org.example.programming5project.presentation.controllers.mvc.mvcdto.UserDto;
 import org.example.programming5project.repository.UserRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;

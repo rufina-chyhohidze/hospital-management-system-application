@@ -1,13 +1,12 @@
-package org.example.programming5project.presentation.api;
+package org.example.programming5project.presentation.controllers.api;
 
 import jakarta.validation.Valid;
 import org.example.programming5project.domain.Patient;
 import org.example.programming5project.domain.User;
-import org.example.programming5project.exceptions.PatientNotFoundException;
-import org.example.programming5project.presentation.api.dtos.AddPatientDto;
-import org.example.programming5project.presentation.api.dtos.PatientDto;
-import org.example.programming5project.presentation.api.dtos.PatientMapper;
-import org.example.programming5project.presentation.api.dtos.UpdatePatientDto;
+import org.example.programming5project.presentation.controllers.api.dtos.AddPatientDto;
+import org.example.programming5project.presentation.controllers.api.dtos.PatientDto;
+import org.example.programming5project.presentation.controllers.api.dtos.PatientMapper;
+import org.example.programming5project.presentation.controllers.api.dtos.UpdatePatientDto;
 import org.example.programming5project.service.PatientService;
 import org.example.programming5project.service.UserService;
 import org.example.programming5project.service.security.UserDetailsImpl;
@@ -15,13 +14,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -79,16 +75,18 @@ public class PatientRestController {
     @PatchMapping("/{id}")
     public ResponseEntity<Void> updatePatient(
             @PathVariable String id,
-            @RequestBody @Valid UpdatePatientDto updatePatientDto) {
+            @RequestBody @Valid UpdatePatientDto updatePatientDto,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        Patient patient = patientService.findPatientById(id);
+
+        if (!patient.getCreator().getId().equals(userDetails.getUserId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
 
         boolean isUpdated = patientService.updatePatientDetails(id,
                 updatePatientDto.billingAmount(), updatePatientDto.admissionDate());
 
-        if (isUpdated) {
-            return ResponseEntity.noContent().build(); // 204
-        } else {
-            return ResponseEntity.notFound().build(); // 404
-        }
+        return isUpdated ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
-
 }

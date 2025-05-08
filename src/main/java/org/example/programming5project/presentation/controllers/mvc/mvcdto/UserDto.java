@@ -1,4 +1,4 @@
-package org.example.programming5project.presentation.mvc.mvcdto;
+package org.example.programming5project.presentation.controllers.mvc.mvcdto;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

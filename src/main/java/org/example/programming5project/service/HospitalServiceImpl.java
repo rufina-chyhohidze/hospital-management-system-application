@@ -1,10 +1,9 @@
 package org.example.programming5project.service;
 
 import org.example.programming5project.domain.Department;
-import org.example.programming5project.domain.Doctor;
 import org.example.programming5project.domain.Hospital;
-import org.example.programming5project.presentation.api.dtos.HospitalDto;
-import org.example.programming5project.presentation.mvc.viewmodels.HospitalForm;
+import org.example.programming5project.presentation.controllers.api.dtos.HospitalDto;
+import org.example.programming5project.presentation.controllers.mvc.viewmodels.HospitalForm;
 import org.example.programming5project.repository.DoctorJpaDataRepository;
 import org.example.programming5project.repository.HospitalJpaRepository;
 import org.slf4j.Logger;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

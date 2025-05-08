@@ -1,6 +1,6 @@
-package org.example.programming5project.presentation.mvc;
+package org.example.programming5project.presentation.controllers.mvc;
 
-import org.example.programming5project.presentation.mvc.mvcdto.UserDto;
+import org.example.programming5project.presentation.controllers.mvc.mvcdto.UserDto;
 import org.example.programming5project.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

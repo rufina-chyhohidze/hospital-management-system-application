@@ -1,4 +1,4 @@
-package org.example.programming5project.presentation.api.dtos;
+package org.example.programming5project.presentation.controllers.api.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Min;
