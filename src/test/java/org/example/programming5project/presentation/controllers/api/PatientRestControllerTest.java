@@ -41,7 +41,7 @@ class PatientRestControllerTest {
     private User admin;
     private User otherAdmin;
     private User doctor;
-    private Patient patient;
+    private Patient patient; //
 
     @BeforeEach
     void setUp() {
