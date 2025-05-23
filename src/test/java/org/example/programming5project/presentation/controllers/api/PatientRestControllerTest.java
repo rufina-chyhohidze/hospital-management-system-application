@@ -22,8 +22,7 @@ import java.time.LocalDate;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -108,6 +107,25 @@ class PatientRestControllerTest {
                         .with(csrf()))
                 .andExpect(status().isForbidden());
     }
+    @Test
+    @WithUserDetails(value = "admin@med.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    void shouldReturnBadRequestIfInvalidPatientDataProvided() throws Exception {
+        //im missing here some values to test
+        mockMvc.perform(post("/api/patients")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                        {
+                          "lastName": "Test",
+                          "age": 30,
+                          "gender": "FEMALE",
+                          "billingAmount": 150.0
+                        }
+                        """)
+                        .with(csrf()))
+                .andExpect(status().isBadRequest());
+    }
+
+
     @AfterEach
     void cleanUp() {
         testHelper.cleanUp();

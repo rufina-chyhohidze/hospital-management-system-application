@@ -82,11 +82,10 @@ public class DoctorController {
      * To handle doctorNotFoundException
      * @param ex
      * @param model
-     * @param session
      * @return
      */
     @ExceptionHandler(DoctorNotFoundException.class)
-    public String handleDoctorNotFoundException(DoctorNotFoundException ex, Model model, HttpSession session) {
+    public String handleDoctorNotFoundException(DoctorNotFoundException ex, Model model) {
         logger.error("Exception: {}", ex.getMessage());
         model.addAttribute("errorMessage", ex.getMessage());
         return "error";
@@ -94,7 +93,7 @@ public class DoctorController {
 
 
     @PostMapping("/add")
-    public String addDoctor(@ModelAttribute("doctorForm")@Valid DoctorForm doctorForm, BindingResult bindingResult, Model model,HttpSession session) {
+    public String addDoctor(@ModelAttribute("doctorForm")@Valid DoctorForm doctorForm, BindingResult bindingResult, Model model) {
         if(bindingResult.hasErrors()) {
             logger.warn("Validation errors: {}", bindingResult.getAllErrors());
             model.addAttribute("hospitals", hospitalService.getAllHospitals());
@@ -121,7 +120,7 @@ public class DoctorController {
     }
 
     @PostMapping("/delete/{licenseNumber}")
-    public String deleteDoctor(@PathVariable int licenseNumber, RedirectAttributes redirectAttributes,HttpSession session) {
+    public String deleteDoctor(@PathVariable int licenseNumber, RedirectAttributes redirectAttributes) {
         try {
             logger.info("Deleting doctor: "+licenseNumber + "....");
             doctorService.removeDoctor(licenseNumber);
@@ -169,5 +168,6 @@ public class DoctorController {
 
         return "redirect:/doctors/" + doctorId;
     }
+
 
 }

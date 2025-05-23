@@ -47,7 +47,7 @@ public class DoctorJpaDataServiceImpl implements DoctorService {
     @Transactional(readOnly = true) // Fetch Doctor with Medical Records
     public Doctor findDoctorByLicenseNumber(int licenseNumber) {
         return doctorRepository.findDoctorByLicenseNumber(licenseNumber)
-                .orElseThrow(() -> new RuntimeException("Doctor with license number " + licenseNumber + " not found"));
+                .orElseThrow(() -> new DoctorNotFoundException("Doctor with license number " + licenseNumber + " not found"));
     }
 
 

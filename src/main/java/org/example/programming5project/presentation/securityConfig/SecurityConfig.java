@@ -23,6 +23,10 @@ public class SecurityConfig {
                         .requestMatchers("/", "/login", "/register", "/css/**", "/webjars/**", "/js/**").permitAll()
                         .requestMatchers("/patients/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/hospitals").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/doctors/delete/**").hasRole("ADMIN")
+                        .requestMatchers("/doctors/add").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/patients/**").hasRole("ADMIN")
+                        .requestMatchers("/hospitals/add/**").hasRole("ADMIN")
 
                         .requestMatchers("/hospitals/**").permitAll()
                         .anyRequest().permitAll()

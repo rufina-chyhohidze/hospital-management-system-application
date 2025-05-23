@@ -92,7 +92,7 @@ public class PatientController {
     public String handlePatientNotFoundException(PatientNotFoundException ex, Model model) {
         logger.error("Exception: {}", ex.getMessage());
         model.addAttribute("errorMessage", ex.getMessage());
-        return "patientError";
+        return "error";
     }
 
     @PostMapping("/add")
