@@ -25,10 +25,10 @@ INSERT INTO hospital_departments (hospital_id, departments) VALUES
                                                                 (10, 'PEDIATRICS'), (10, 'DENTISTRY');
 
 -- Insert admin user (creator for patients)
-INSERT INTO users (id, username, password, user_role)
-VALUES (1, 'admin', '$2a$12$ucFz4s/XXdApkjzjQK4T7.naea.W7PEZ/ey/GZIzMNgglH5fSq3C2', 'ADMIN'),
-       (2,'user','$2a$12$F7l2Xhr0coMIo6vo0040eu9ZUV6xdXjxDiqJXuWF5vwQxDc8MLSZ6','USER'),
-       (3,'admin2','$2a$12$e9Rs1zl9O1EomSWjFHaWZO2AFlgDUpOuteuAl0Tf0BLVsdboxLWA.','ADMIN');
+INSERT INTO users ( username, password, user_role)
+VALUES ( 'admin', '$2a$12$ucFz4s/XXdApkjzjQK4T7.naea.W7PEZ/ey/GZIzMNgglH5fSq3C2', 'ADMIN'),
+       ('user','$2a$12$F7l2Xhr0coMIo6vo0040eu9ZUV6xdXjxDiqJXuWF5vwQxDc8MLSZ6','USER'),
+       ('admin2','$2a$12$e9Rs1zl9O1EomSWjFHaWZO2AFlgDUpOuteuAl0Tf0BLVsdboxLWA.','ADMIN');
 -- 🔐 admin123
     --user123
     --admin123
