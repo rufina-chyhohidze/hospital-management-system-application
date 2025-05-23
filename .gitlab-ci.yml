@@ -19,17 +19,14 @@ test:
   stage: test
   services:
     - postgres:17.2-alpine
-  variables:
-    SPRING_DATASOURCE_URL: jdbc:postgresql://postgres_hospitalManagement_db:5432/hospitalManagement
-    SPRING_DATASOURCE_USERNAME: spring
-    SPRING_DATASOURCE_PASSWORD: spring
-    SPRING_JPA_HIBERNATE_DDL_AUTO: create-drop
-    SPRING_SQL_INIT_MODE: never
-    SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
-    SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
-    SPRING_PROFILES_ACTIVE: test
   script:
     - ./gradlew check --no-daemon
+  variables:
+    POSTGRES_DB: 'hospital-test'
+    POSTG.RES_USER: 'spring'
+    POSTGRES_PASSWORD: 'spring'
+    CI_DB_HOST_PORT: 'postgres:5432'
+
   artifacts:
     when: always
     reports:
