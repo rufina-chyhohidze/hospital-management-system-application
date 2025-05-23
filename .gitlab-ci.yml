@@ -20,7 +20,7 @@ test:
   services:
     - postgres:17.2-alpine
   variables:
-    SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/hospitalManagement
+    SPRING_DATASOURCE_URL: jdbc:postgresql://postgres_hospitalManagement_db:5432/hospitalManagement
     SPRING_DATASOURCE_USERNAME: spring
     SPRING_DATASOURCE_PASSWORD: spring
     SPRING_JPA_HIBERNATE_DDL_AUTO: create-drop
