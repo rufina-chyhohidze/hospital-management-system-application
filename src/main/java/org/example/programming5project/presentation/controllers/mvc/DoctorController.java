@@ -1,13 +1,12 @@
 package org.example.programming5project.presentation.controllers.mvc;
 
+import jakarta.validation.Valid;
 import org.example.programming5project.domain.*;
 import org.example.programming5project.exceptions.DoctorNotFoundException;
 import org.example.programming5project.presentation.controllers.mvc.viewmodels.DoctorForm;
 import org.example.programming5project.service.DoctorService;
 import org.example.programming5project.service.HospitalService;
 import org.example.programming5project.service.PatientService;
-import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -18,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.List;
 
 
 @Controller
@@ -159,7 +158,7 @@ public class DoctorController {
     @PostMapping("/{doctorId}/add-medical-record")
     public String addMedicalRecord(@PathVariable int doctorId,
                                    @RequestParam String patientId,
-                                   @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate treatmentDate,
+                                   @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate treatmentDate,
                                    @RequestParam String diagnosis,
                                    @RequestParam String treatment) {
         logger.info("Adding medical record for Patient: {}, Doctor: {}", patientId, doctorId);

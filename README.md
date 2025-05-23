@@ -5,7 +5,7 @@ This is a **Spring Boot** application that manages **hospitals, doctors, patient
 
 ---
 
-## 📚 Course Information
+##  Course Information
 - **Course Name**: Programming 5
 - **Student Name**: Chyhohidze Rufina
 - **KdG Email**: rufina.chyhohidze@student.kdg.be
@@ -14,7 +14,7 @@ This is a **Spring Boot** application that manages **hospitals, doctors, patient
 
 ---
 
-## 📌 Main Entities
+##  Main Entities
 - Hospital (One-to-Many with Doctors)
 - Doctor (Many-to-One with Hospital)
 - Patient
@@ -22,7 +22,7 @@ This is a **Spring Boot** application that manages **hospitals, doctors, patient
 
 ---
 
-## 👤 Seeded Users
+##  Seeded Users
 
 | Username | Password | Role  |
 |----------|----------|-------|
@@ -35,39 +35,39 @@ This is a **Spring Boot** application that manages **hospitals, doctors, patient
 
 ---
 
-## 🔑 Authentication Access
+##  Authentication Access
 
-- 🔓 [Public Page (Hospitals)](http://localhost:8080/hospitals) – accessible by anyone
-- 🔐 [Patients Page](http://localhost:8080/patients) – requires login (ADMIN or USER)
+-  [Public Page (Hospitals)](http://localhost:8080/hospitals) – accessible by anyone
+-  [Patients Page](http://localhost:8080/patients) – requires login (ADMIN or USER)
 
 ---
 
-## 🔐 Roles & Permissions
+##  Roles & Permissions
 
-### 👤 Unauthenticated Users:
+###  Unauthenticated Users:
 - Can **view hospitals**.
 - Cannot **view, edit, delete, or create** patients, doctors, or medical records.
 
-### 👩‍⚕️ USER (user):
+### ️ USER (user):
 - Can **view all patients**.
 - Can **add** a new patient.
 - Can **edit or delete only the patients they created**.
 - Cannot **modify or delete patients created by others**.
 
-### 👑 ADMIN (admin):
+###  ADMIN (admin):
 - Can **view, add, edit, delete all patients**.
 - Can **access additional admin-only functionality**.
 
 ---
 
-## 🔒 Hidden Information for Unauthenticated Users
+##  Hidden Information for Unauthenticated Users
 
 - Pages like [Patients](http://localhost:8080/patients) are not accessible.
 - All `Edit` and `Delete` buttons are hidden unless the user is authenticated.
 
 ---
 
-## 👥 User Relations
+##  User Relations
 
 - A `User` is associated with the `Patient` entity as the **creator**.
 - Only the **creator** of a patient (or an ADMIN) can **edit/delete** the patient.
@@ -87,24 +87,24 @@ https://gitlab.com/kdg-ti/programming-5/projects-24-25/acs202/rufina.chyhohidze/
 
 
 
-## 📡 API Examples
+##  API Examples
 
 ### Week 2 - API Requests & Responses
 
-#### ✅ Get all patients
+####  Get all patients
 ```
 GET http://localhost:8080/api/patients
 ```
 - Response: 200 OK
 
-#### ❌ Delete patient
+####  Delete patient
 ```
 DELETE http://localhost:8080/api/patients/P001
 ```
 - 204 No Content if deleted
 - 404 Not Found if patient not found
 
-#### 🔎 Search hospital
+####  Search hospital
 ```
 GET http://localhost:8080/api/hospitals?search=uptown
 ```
@@ -121,7 +121,7 @@ POST http://localhost:8080/api/patients
 - 201 Created
 - 400 Bad Request if invalid
 
-#### 📝 Update patient billing or date
+####  Update patient billing or date
 ```
 PATCH http://localhost:8080/api/patients/P001
 ```
@@ -131,7 +131,7 @@ PATCH http://localhost:8080/api/patients/P001
 
 ---
 
-## 🔍 Test API Calls
+##  Test API Calls
 
 ### Get all patients
 ```
@@ -181,3 +181,16 @@ Cookie: JSESSIONID=<session_id>
   "admissionDate": "2025-03-01"
 }
 ```
+
+### Mocking Tests
+These tests use `@MockitoBean` to isolate and mock dependencies:
+
+- `PatientRestControllerUnitTest`
+- `DoctorJpaDataServiceImplTest`
+
+### Tests Using `verify(...)`
+These tests assert that specific methods were called with expected arguments:
+
+- `PatientRestControllerUnitTest`
+- `DoctorJpaDataServiceImplTest`
+- `BoardGamesControllerUnitTest` 
