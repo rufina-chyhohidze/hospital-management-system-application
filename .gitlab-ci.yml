@@ -23,7 +23,7 @@ test:
     - ./gradlew check --no-daemon
   variables:
     POSTGRES_DB: 'hospital-test'
-    POSTG.RES_USER: 'spring'
+    POSTGRES_USER: 'spring'
     POSTGRES_PASSWORD: 'spring'
     CI_DB_HOST_PORT: 'postgres:5432'
 
