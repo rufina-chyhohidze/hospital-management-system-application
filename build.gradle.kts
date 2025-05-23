@@ -34,6 +34,7 @@ dependencies {
     annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
     testImplementation ("org.springframework.security:spring-security-test")
 
+
 }
 
 tasks.withType<Test> {
