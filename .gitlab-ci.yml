@@ -21,12 +21,6 @@ test:
     - postgres:17.2-alpine
   script:
     - ./gradlew check --no-daemon
-  variables:
-    POSTGRES_DB: 'hospital-test'
-    POSTGRES_USER: 'spring'
-    POSTGRES_PASSWORD: 'spring'
-    CI_DB_HOST_PORT: 'postgres:5432'
-
   artifacts:
     when: always
     reports:
