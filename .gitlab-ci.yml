@@ -21,6 +21,12 @@ test:
     - postgres:17.2-alpine
   script:
     - ./gradlew check --no-daemon
+  variables:
+    POSTGRES_DB: "$POSTGRES_DB"
+    POSTGRES_USER: "$POSTGRES_USER"
+    POSTGRES_PASSWORD: "$POSTGRES_PASSWORD"
+    CI_DB_HOST_PORT: "$CI_DB_HOST_PORT"
+
   artifacts:
     when: always
     reports:
