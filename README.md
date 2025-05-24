@@ -9,7 +9,7 @@ This is a **Spring Boot** application that manages **hospitals, doctors, patient
 - **Course Name**: Programming 5
 - **Student Name**: Chyhohidze Rufina
 - **KdG Email**: rufina.chyhohidze@student.kdg.be
-- **Academic Year**: 2025-2026
+- **Academic Year**: 2024-2025
 - **Group**: ACS202
 
 ---
@@ -50,21 +50,21 @@ This is a **Spring Boot** application that manages **hospitals, doctors, patient
 
 ### ️ USER (user):
 - Can **view all patients**.
-- Can **add** a new patient.
-- Can **edit or delete only the patients they created**.
-- Cannot **modify or delete patients created by others**.
+- Can **view hospitals**.
+- Can **view doctors**.
+
 
 ###  ADMIN (admin):
-- Can **view, add, edit, delete all patients**.
+- Can **view, add, edit, delete patients he created patients**.
 - Can **access additional admin-only functionality**.
-
+- Can **delete doctors**
 ---
 
 ##  Hidden Information for Unauthenticated Users
 
 - Pages like [Patients](http://localhost:8080/patients) are not accessible.
 - All `Edit` and `Delete` buttons are hidden unless the user is authenticated.
-
+- Delete button is hidden for unauthorized users
 ---
 
 ##  User Relations
