@@ -43,4 +43,17 @@ X-CSRF-TOKEN: u_f0_dGWvfHdZxkyfgbs-To4c_RkVHwr_YV3C4adakIAa0ahipPGmbWkhcLwAyFXTi
   "admissionDate": "2025-03-01"
 }
 
+###
+GET http://localhost:8080/api/hospitals/11
+Accept: application/json
+
+###
+PATCH http://localhost:8080/api/hospitals/11
+Content-Type: application/json
+
+{
+  "hospitalName": "Rufina having fun",
+  "hospitalAddress": "Groenplaatsstraat12",
+  "establishedDate": "2010-02-01"
+}
 

@@ -1,6 +1,8 @@
 package org.example.programming5project.presentation.controllers.api;
 
 import org.example.programming5project.presentation.controllers.api.dtos.HospitalDto;
+import org.example.programming5project.presentation.controllers.api.dtos.HospitalMapper;
+import org.example.programming5project.presentation.controllers.api.dtos.UpdateHospitalDto;
 import org.example.programming5project.service.HospitalService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,10 +16,12 @@ import java.util.List;
 @RequestMapping("/api/hospitals")
 public class HospitalRestController {
     private final HospitalService hospitalService;
+    private final HospitalMapper hospitalMapper;
     private final Logger logger = LoggerFactory.getLogger(HospitalRestController.class);
 
-    public HospitalRestController(HospitalService hospitalService) {
+    public HospitalRestController(HospitalService hospitalService,HospitalMapper hospitalMapper) {
         this.hospitalService = hospitalService;
+        this.hospitalMapper = hospitalMapper;
     }
 
     @GetMapping
@@ -36,4 +40,27 @@ public class HospitalRestController {
             return ResponseEntity.ok(searchResult);
         }
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<HospitalDto> getOneHospital(@PathVariable Long id) {
+        System.out.println("Attempting to fetch hospital with ID: " + id);
+        return hospitalService.findHospitalById(id)
+                .map(hospitalMapper::toDto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> updateHospital(@PathVariable Long id, @RequestBody UpdateHospitalDto dto) {
+        boolean updated = hospitalService.updateHospital(id, dto);
+        if (updated) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+
 }

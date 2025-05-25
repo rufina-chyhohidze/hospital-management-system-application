@@ -193,4 +193,16 @@ These tests assert that specific methods were called with expected arguments:
 
 - `PatientRestControllerUnitTest`
 - `DoctorJpaDataServiceImplTest`
-- `BoardGamesControllerUnitTest` 
+- `DoctorJpaDataServiceImplUnitTest` 
+
+## Client Project
+
+### Week11
+
+- Set up a separate project using npm, Webpack, Sass, and ESLint.
+- Used SCSS with variables and nesting.
+- Used Bootstrap and customized its colors.
+- Made a single-page app with two sections: Search and Add.
+- Wrote my own JavaScript to switch between sections (no Bootstrap JS).
+- Added a form to update hospital details (sends PATCH request).
+- Backend allows requests from this client (localhost:9000) and disables CSRF for testing.

@@ -3,6 +3,7 @@ package org.example.programming5project.service;
 import org.example.programming5project.domain.Department;
 import org.example.programming5project.domain.Hospital;
 import org.example.programming5project.presentation.controllers.api.dtos.HospitalDto;
+import org.example.programming5project.presentation.controllers.api.dtos.UpdateHospitalDto;
 import org.example.programming5project.presentation.controllers.mvc.viewmodels.HospitalForm;
 import org.example.programming5project.repository.DoctorJpaDataRepository;
 import org.example.programming5project.repository.HospitalJpaRepository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -88,5 +90,21 @@ public class HospitalServiceImpl implements HospitalService {
                 .map(h -> new HospitalDto(h.getId(), h.getHospitalName(), h.getHospitalAddress(), h.getEstablishedDate(), h.getDepartments()))
                 .toList();
     }
+
+    public Optional<Hospital> findHospitalById(Long id) {
+        return hospitalJpaRepository.findByIdWithDepartments(id);
+    }
+
+    @Override
+    public boolean updateHospital(Long id, UpdateHospitalDto dto) {
+        return hospitalJpaRepository.findById(id).map(hospital -> {
+            hospital.setHospitalName(dto.hospitalName());
+            hospital.setHospitalAddress(dto.hospitalAddress());
+            hospital.setEstablishedDate(dto.establishedDate());
+            hospitalJpaRepository.save(hospital);
+            return true;
+        }).orElse(false);
+    }
+
 
 }
