@@ -19,6 +19,10 @@ tasks.named<Copy>("processResources") {
 //    }
 //}
 
+node {
+    version.set("22.1.0")
+    download.set(true)
+}
 
 java {
     toolchain {
