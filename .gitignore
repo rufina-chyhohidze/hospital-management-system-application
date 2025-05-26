@@ -37,5 +37,6 @@ out/
 .vscode/
 .env
 
+node_modules/
 src/main/resources/static/js/
 src/main/resources/static/css/
