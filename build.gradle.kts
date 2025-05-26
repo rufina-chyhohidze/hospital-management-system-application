@@ -12,12 +12,12 @@ tasks.named<Copy>("processResources") {
     dependsOn("npm_run_build")
 }
 
-val npmPath = File("/Users/rufinachyhohidze/.nvm/versions/node/v22.15.0/bin/npm")
-if (npmPath.exists()) {
-    node {
-        npmCommand.set(npmPath.absolutePath)
-    }
-}
+//val npmPath = File("/Users/rufinachyhohidze/.nvm/versions/node/v22.15.0/bin/npm")
+//if (npmPath.exists()) {
+//    node {
+//        npmCommand.set(npmPath.absolutePath)
+//    }
+//}
 
 
 java {
