@@ -4,6 +4,7 @@ import org.example.programming5project.converters.StringToDepartmentConverter;
 import org.example.programming5project.converters.StringToGenderConverter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -15,5 +16,14 @@ public class WebConfig implements WebMvcConfigurer {
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(new StringToDepartmentConverter());
         registry.addConverter(new StringToGenderConverter());
+    }
+
+    //to make spring knows where are the static files are located ( for npm integration)
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry
+                .addResourceHandler("/**")
+                .addResourceLocations("classpath:/static/");
+
     }
 }
