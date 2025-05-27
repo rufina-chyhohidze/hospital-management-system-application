@@ -48,7 +48,7 @@ GET http://localhost:8080/api/hospitals/11
 Accept: application/json
 
 ###
-PATCH http://localhost:8080/api/hospitals/11
+PATCH http://localhost:8080/api/hospitals/1
 Content-Type: application/json
 
 {

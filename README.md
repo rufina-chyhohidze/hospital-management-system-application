@@ -14,6 +14,23 @@ This is a **Spring Boot** application that manages **hospitals, doctors, patient
 
 ---
 
+Build Instructions
+
+### 1. Install NPM Dependencies
+Run this once to install frontend packages:
+
+```bash
+npm install
+````
+```bash
+./gradlew npm_run_build
+```
+- and start the application
+```bash
+./gradlew bootRun
+```
+
+
 ##  Main Entities
 - Hospital (One-to-Many with Doctors)
 - Doctor (Many-to-One with Hospital)
@@ -206,3 +223,39 @@ These tests assert that specific methods were called with expected arguments:
 - Wrote my own JavaScript to switch between sections (no Bootstrap JS).
 - Added a form to update hospital details (sends PATCH request).
 - Backend allows requests from this client (localhost:9000) and disables CSRF for testing.
+
+### Bootstrap Icon Usage
+
+- **Icon Added**: `bi-hospital-fill`
+- **Where**: Home page title section
+- **URL**: [http://localhost:8080/home](http://localhost:8080/home)
+- **Source File**: `src/main/resources/templates/home.html`
+
+```html
+<h2 class="text-center mb-4 fw-bold">
+  <i class="bi bi-hospital-fill me-2"></i>Overview of our Departments
+</h2>
+```
+
+## Client-Side Form Validation
+
+- **Form**: Register Form
+- **Library**: [`joi`](https://www.npmjs.com/package/joi)
+- **URL**: [http://localhost:8080/register](http://localhost:8080/register)
+- **Source Files**:
+    - JS validation: `src/main/js/register.js`
+    - Page template: `src/main/resources/templates/register.html`
+
+### Validation Rules:
+- `username`: minimum 3 characters
+- `password`: minimum 6 characters
+
+---
+
+## JavaScript Dependencies Added
+
+| Package           | Purpose                          | File                                                                                | Demo URL                                                                                          |
+|-------------------|----------------------------------|-------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
+| `joi`             | Form validation                  | `src/main/js/register.js`                                                           | [http://localhost:8080/register](http://localhost:8080/register)                                  |
+| `@motionone/dom`  | Animations (fade-in for results) | `src/main/js/search-hospitals.js` `src/main/js/docotrs.js``src/main/js/patients.js` | [http://localhost:8080/hospitals](http://localhost:8080/patients) [http://localhost:8080/doctors] |
+| `dayjs`           | Date formatting                  | `src/main/js/search-hospitals.js`                                                   | [http://localhost:8080/hospitals](http://localhost:8080/hospitals)                                |

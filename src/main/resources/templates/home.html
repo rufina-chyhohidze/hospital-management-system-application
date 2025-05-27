@@ -17,6 +17,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon/favicon-16x16.png">
     <link rel="icon" href="/static/favicon/favicon.ico">
+    <script defer th:src="@{/js/bundle-home.js}"></script>
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
@@ -32,7 +33,9 @@
             <div class="carousel-item active custom-carousel-item">
                 <img src="/images/d3.jpg" th:src="@{/images/d3.jpg}" class="d-block w-100 custom-image" alt="Hospital">
                 <div class="carousel-caption d-flex flex-column align-items-center">
-                        <h1 class="fw-bold">Hospital Management System</h1>
+                    <h1 class="fw-bold">
+                        <i class="bi bi-hospital-fill me-2 text-light"></i>Hospital Management System
+                    </h1>
                         <a href="#book" class="btn btn-light mt-2 shadow">Have Feedback?</a>
                     </div>
             </div>

@@ -1,9 +1,23 @@
-
+import { animate, stagger } from 'motion'
 import { getCsrf } from './util/csrf.js'
 
 const { token, header } = getCsrf()
 const addPatientForm = document.getElementById('addPatientForm')
 const patientsTableBody = document.getElementById('patientsTableBody')
+
+const patientRows = document.querySelectorAll('#patientsTableBody tr')
+
+animate(patientRows, {
+    opacity: [ 0, 1 ],
+    y: [ -20, 0 ]
+}, {
+    duration: 0.6,
+    delay: stagger(0.1),
+    easing: 'ease-out'
+})
+
+animate('h1.mb-4', { opacity: [ 0, 1 ], x: [ -50, 0 ] }, { duration: 0.6 })
+animate('#addPatientForm', { opacity: [ 0, 1 ], scale: [ 0.9, 1 ] }, { delay: 0.4, duration: 0.5 })
 
 const currentUserId = document.querySelector('meta[name=\'current-user-id\']')?.content
 
