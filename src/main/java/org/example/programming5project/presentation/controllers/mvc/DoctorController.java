@@ -7,9 +7,11 @@ import org.example.programming5project.presentation.controllers.mvc.viewmodels.D
 import org.example.programming5project.service.DoctorService;
 import org.example.programming5project.service.HospitalService;
 import org.example.programming5project.service.PatientService;
+import org.example.programming5project.service.security.UserDetailsImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -55,25 +57,26 @@ public class DoctorController {
     }
 
     @GetMapping("/{doctorId}")
-    public String getDoctorDetails(@PathVariable int doctorId, Model model) {
+    public String getDoctorDetails(@PathVariable int doctorId,
+                                   Model model,
+                                   @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Doctor doctor = doctorService.findDoctorByLicenseNumber(doctorId);
         if (doctor == null) {
             logger.error("Doctor with ID {} not found", doctorId);
             throw new DoctorNotFoundException("Doctor with ID " + doctorId + " not found.");
         }
 
-        List<Patient> patients = patientService.getPatientsForDoctor(doctorId);//getnotassignedpatients
-        List<Patient> allPatients = patientService.getAllPatients();
 
-        // medical records explicitly
+        List<Patient> assignedPatients = patientService.getPatientsForDoctor(doctorId);
+
+        List<Patient> allPatients = patientService.getPatientsCreatedByUser(userDetails.getUserId());
+
         List<MedicalRecord> medicalRecords = doctor.getMedicalRecords();
 
         model.addAttribute("doctor", doctor);
-        model.addAttribute("assignedPatients", patients);
+        model.addAttribute("assignedPatients", assignedPatients);
         model.addAttribute("allPatients", allPatients);
         model.addAttribute("medicalRecords", medicalRecords);
-        ///i need not assigned patients ,and remove assign patients, and do i need all patinets?
-        // Include medical records
 
         return "doctorDetails";
     }

@@ -1,9 +1,6 @@
 package org.example.programming5project.repository;
 
-import org.example.programming5project.domain.Department;
 import org.example.programming5project.domain.Doctor;
-import org.example.programming5project.domain.Hospital;
-import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,8 +14,6 @@ import java.util.Optional;
  */
 @Repository
 public interface DoctorJpaDataRepository extends JpaRepository<Doctor, Integer> {
-    List<Doctor> findByDepartment(Department department);
-
     @Query("""
     SELECT d FROM Doctor d
     LEFT JOIN FETCH d.medicalRecords mr
@@ -28,12 +23,12 @@ public interface DoctorJpaDataRepository extends JpaRepository<Doctor, Integer> 
     List<Doctor> findDoctorsForPatient(@Param("patientId") String patientId);
 
     @Query("""
-    SELECT d FROM Doctor d
-    LEFT JOIN FETCH d.medicalRecords mr
-    LEFT JOIN FETCH mr.patient
-    LEFT JOIN FETCH d.hospital
-    WHERE d.licenseNumber = :licenseNumber
-    """)
+SELECT DISTINCT d FROM Doctor d
+LEFT JOIN FETCH d.hospital
+LEFT JOIN FETCH d.medicalRecords mr
+LEFT JOIN FETCH mr.patient p
+LEFT JOIN FETCH p.creator
+WHERE d.licenseNumber = :licenseNumber
+""")
     Optional<Doctor> findDoctorByLicenseNumber(@Param("licenseNumber") int licenseNumber);
-    List<Doctor> findByHospital(Hospital hospital);
 }

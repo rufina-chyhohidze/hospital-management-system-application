@@ -29,7 +29,12 @@
     <div class="card mb-4">
         <div class="row g-0">
             <div class="col-md-4">
-                <!-- placeholder for future picture -->
+                <div class="text-center p-3">
+                    <img src="/images/default-patient.png"
+                         alt="Doctor Photo"
+                         class="img-fluid rounded shadow"
+                         style="max-height: 350px; width: auto;">
+                </div>
             </div>
             <div class="col-md-8">
                 <div class="card-body">
@@ -64,34 +69,38 @@
     </div>
 </div>
 
-<h2>Add Medical Record</h2>
-<form th:action="@{/doctors/{doctorId}/add-medical-record(doctorId=${doctor.licenseNumber})}" method="post">
-    <div class="form-group">
-        <label for="patientId">Select Patient</label>
-        <select id="patientId" name="patientId" class="form-select" required>
-            <option value="" disabled selected>Select a patient</option>
-            <option th:each="patient : ${allPatients}" th:value="${patient.patientId}"
-                    th:text="${patient.firstName} + ' ' + ${patient.lastName}"></option>
-        </select>
-    </div>
+<div th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+    <h2>Add Medical Record</h2>
+    <form th:action="@{/doctors/{doctorId}/add-medical-record(doctorId=${doctor.licenseNumber})}" method="post">
+        <div class="form-group">
+            <label for="patientId">Select Patient</label>
+            <select id="patientId" name="patientId" class="form-select" required>
+                <option value="" disabled selected>Select a patient</option>
+                <option th:each="patient : ${allPatients}"
+                        th:value="${patient.patientId}"
+                        th:text="${patient.firstName} + ' ' + ${patient.lastName}"></option>
+            </select>
+        </div>
 
-    <div class="form-group">
-        <label for="diagnosis">Diagnosis</label>
-        <input type="text" id="diagnosis" name="diagnosis" class="form-control" required />
-    </div>
+        <div class="form-group">
+            <label for="diagnosis">Diagnosis</label>
+            <input type="text" id="diagnosis" name="diagnosis" class="form-control" required />
+        </div>
 
-    <div class="form-group">
-        <label for="treatment">Treatment</label>
-        <input type="text" id="treatment" name="treatment" class="form-control" required />
-    </div>
+        <div class="form-group">
+            <label for="treatment">Treatment</label>
+            <input type="text" id="treatment" name="treatment" class="form-control" required />
+        </div>
 
-    <div class="form-group">
-        <label for="treatmentDate">Treatment Date</label>
-        <input type="date" id="treatmentDate" name="treatmentDate" class="form-control" required />
-    </div>
+        <div class="form-group">
+            <label for="treatmentDate">Treatment Date</label>
+            <input type="date" id="treatmentDate" name="treatmentDate" class="form-control" required />
+        </div>
 
-    <button type="submit" class="btn btn-success mt-3">Add Medical Record</button>
-</form>
+        <button type="submit" class="btn btn-success mt-3">Add Medical Record</button>
+    </form>
+</div>
+
 
 
 <h2>Medical Records</h2>

@@ -31,7 +31,6 @@ public class Patient {
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
     private List<MedicalRecord> medicalRecords = new ArrayList<>();
     @ManyToOne(fetch = FetchType.LAZY)
-    // todo check if neccessary
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "hospital_id", nullable = true)
     private Hospital hospital;

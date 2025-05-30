@@ -29,16 +29,25 @@
 
     <div class="card mb-4">
         <div class="row g-0">
+
             <div class="col-md-4">
+                <div class="text-center p-3">
+                    <img src="/images/default-patient.png"
+                         alt="Patient Photo"
+                         class="img-fluid rounded shadow"
+                         style="max-height: 350px; width: auto;">
+                </div>
             </div>
             <div class="col-md-8">
                 <div class="card-body">
+
                     <h5 class="card-title" th:text="${patient.firstName} + ' ' + ${patient.lastName}"></h5>
                     <p class="card-text"><strong>Patient ID:</strong> <span th:text="${patient.patientId}"></span></p>
                     <p class="card-text"><strong>Age:</strong> <span th:text="${patient.age}"></span></p>
                     <p class="card-text"><strong>Gender:</strong> <span th:text="${patient.gender}"></span></p>
                     <p class="card-text"><strong>Admission Date:</strong> <span th:text="${patient.admissionDate}"></span></p>
                     <p class="card-text"><strong>Billing Amount:</strong> <span th:text="${patient.billingAmount}"></span></p>
+                    <p><strong>Created by:</strong> <span th:text="${patient.creator.username}"></span></p>
                     <h3>Assigned Doctors</h3>
                     <ul>
                         <li th:each="doctor : ${assignedDoctors}">

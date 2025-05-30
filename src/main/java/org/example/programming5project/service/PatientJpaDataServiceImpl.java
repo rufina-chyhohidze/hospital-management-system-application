@@ -133,7 +133,12 @@ public class PatientJpaDataServiceImpl implements PatientService {
         patient.setAdmissionDate(newAdmissionDate);
 
         patientRepository.save(patient);
-        return true; // Return true if update was successful
+        return true;
     }
+    @Override
+    public List<Patient> getPatientsCreatedByUser(Long userId) {
+        return patientRepository.findByCreatorId(userId);
+    }
+
 
 }

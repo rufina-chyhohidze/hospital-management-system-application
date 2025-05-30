@@ -1,7 +1,6 @@
 package org.example.programming5project.repository;
 
 import org.example.programming5project.domain.Patient;
-import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,17 +16,20 @@ import java.util.Optional;
 @Repository
 public interface PatientJpaDataRepository  extends JpaRepository<Patient, String> {
     @Query("""
-    SELECT p FROM Patient p
-    LEFT JOIN FETCH p.medicalRecords mr
-    LEFT JOIN FETCH mr.doctor d
-    LEFT JOIN FETCH d.hospital h
-    WHERE p.patientId = :patientId
-    """)
+SELECT DISTINCT p FROM Patient p
+LEFT JOIN FETCH p.creator
+LEFT JOIN FETCH p.medicalRecords mr
+LEFT JOIN FETCH mr.doctor d
+LEFT JOIN FETCH d.hospital
+WHERE p.patientId = :patientId
+""")
     Optional<Patient> findPatientWithMedicalRecords(@Param("patientId") String patientId);
 
     @Query("""
     SELECT DISTINCT p FROM Patient p
+    LEFT JOIN FETCH p.creator
     LEFT JOIN FETCH p.medicalRecords mr
+    LEFT JOIN FETCH mr.doctor
     WHERE mr.doctor.licenseNumber = :doctorId
     """)
     List<Patient> findPatientsForDoctor(@Param("doctorId") int doctorId);
@@ -42,6 +44,9 @@ public interface PatientJpaDataRepository  extends JpaRepository<Patient, String
             @Param("name") String name,
             @Param("admissionDate") LocalDate admissionDate
     );
+
+    @Query("SELECT p FROM Patient p WHERE p.creator.id = :userId")
+    List<Patient> findByCreatorId(@Param("userId") Long userId);
 
 }
 
