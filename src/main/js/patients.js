@@ -72,8 +72,21 @@ if (addPatientForm) {
             addPatientToTable(newPatient)
             addPatientForm.reset()
         } else {
-            // TODO HANDLE ALL POSSIBLE ERROR CODES IN ALL FETCH REQUESTS
-            alert('Failed to add patient.')
+            if (response.status === 400) {
+                const errorBody = await response.json()
+                console.error('Validation errors:', errorBody)
+                alert('Validation failed. Please check the input fields.')
+                return
+            }
+            if (response.status === 403) {
+                alert('Access denied. Please log in again or check CSRF token.')
+                return
+            }
+            if (response.status >= 500) {
+                alert('Server error. Please try again later.')
+                return
+            }
+            alert('Failed to add patient. Unknown error.')
         }
     })
 }

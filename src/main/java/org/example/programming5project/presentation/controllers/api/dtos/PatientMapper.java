@@ -9,5 +9,6 @@ public interface PatientMapper {
     @Mapping(target = "patientId", ignore = true)
     Patient toEntity(AddPatientDto addPatientDto);
 
+    @Mapping(source = "creator.id", target = "creatorId")
     PatientDto toDto(Patient patient);
 }
