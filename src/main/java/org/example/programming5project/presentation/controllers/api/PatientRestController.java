@@ -3,6 +3,7 @@ package org.example.programming5project.presentation.controllers.api;
 import jakarta.validation.Valid;
 import org.example.programming5project.domain.Patient;
 import org.example.programming5project.domain.User;
+import org.example.programming5project.exceptions.PatientNotFoundException;
 import org.example.programming5project.presentation.controllers.api.dtos.AddPatientDto;
 import org.example.programming5project.presentation.controllers.api.dtos.PatientDto;
 import org.example.programming5project.presentation.controllers.api.dtos.PatientMapper;
@@ -54,7 +55,9 @@ public class PatientRestController {
         if (!patient.getCreator().getId().equals(userDetails.getUserId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only delete your own patients.");//403
         }
+        logger.info("Deleting patient with ID: {}", patientId);
         patientService.removePatient(patientId);
+        logger.info("Patient deleted successfully: {}", patientId);
         return ResponseEntity.noContent().build();//204
     }
 
@@ -66,8 +69,10 @@ public class PatientRestController {
         if (patient.getPatientId() == null || patient.getPatientId().isBlank()) {
             patient.setPatientId(UUID.randomUUID().toString());
         }
+        logger.info("Adding patient: {}", patient.toString());
         patient.setCreator(creator);
         patientService.addPatient(patient);
+        logger.info("Patient added successfully: {}", patient.toString());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(patientMapper.toDto(patient));//201
     }
@@ -78,15 +83,19 @@ public class PatientRestController {
             @RequestBody @Valid UpdatePatientDto updatePatientDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        Patient patient = patientService.findPatientById(id);
+        logger.info("Updating patient with ID: {}", id);
+        Patient patient = patientService.findPatientByIdWithCreator(id)
+                .orElseThrow(() -> new PatientNotFoundException("Patient not found"));
 
         if (!patient.getCreator().getId().equals(userDetails.getUserId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
+        logger.info("Patient details for ID updated: {}", id);
 
         boolean isUpdated = patientService.updatePatientDetails(id,
                 updatePatientDto.billingAmount(), updatePatientDto.admissionDate());
 
         return isUpdated ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
+
 }

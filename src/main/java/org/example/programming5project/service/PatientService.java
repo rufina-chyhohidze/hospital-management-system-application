@@ -5,6 +5,7 @@ import org.example.programming5project.domain.Patient;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface PatientService {
     List<Patient> getAllPatients();
@@ -18,4 +19,5 @@ public interface PatientService {
     Patient findPatientWithMedicalRecords(String patientId);
     boolean updatePatientDetails(String patientId, double newBillingAmount, LocalDate newAdmissionDate);
     List<Patient> getPatientsCreatedByUser(Long userId);
+    Optional<Patient> findPatientByIdWithCreator(String patientId);
 }

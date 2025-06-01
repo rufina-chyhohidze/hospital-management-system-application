@@ -47,7 +47,10 @@ WHERE p.patientId = :patientId
 
     @Query("SELECT p FROM Patient p WHERE p.creator.id = :userId")
     List<Patient> findByCreatorId(@Param("userId") Long userId);
- //
+
+    @Query("SELECT p FROM Patient p LEFT JOIN FETCH p.creator WHERE p.patientId = :patientId")
+    Optional<Patient> findByIdWithCreator(@Param("patientId") String patientId);
+
 }
 
 

@@ -1,15 +1,13 @@
 package org.example.programming5project.presentation.controllers.mvc;
 
+import jakarta.validation.Valid;
 import org.example.programming5project.domain.Doctor;
 import org.example.programming5project.domain.Gender;
-import org.example.programming5project.domain.MedicalRecord;
 import org.example.programming5project.domain.Patient;
 import org.example.programming5project.exceptions.PatientNotFoundException;
 import org.example.programming5project.presentation.controllers.mvc.viewmodels.PatientForm;
 import org.example.programming5project.service.DoctorService;
 import org.example.programming5project.service.PatientService;
-import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -17,8 +15,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
 import java.time.LocalDate;
-import java.util.*;
+import java.util.List;
 
 @Controller
 @RequestMapping("/patients")
@@ -33,41 +32,36 @@ public class PatientController {
     }
 
     @GetMapping
-    public String getAllPatients(Model model, HttpSession session) {
+    public String getAllPatients(Model model) {
         logger.info("Fetching all patients...");
         List<Patient> patients = patientService.getAllPatients();
         model.addAttribute("patients", patients);
-        return "patients"; // returns the view called patients.html
+        return "patients";
     }
 
     @GetMapping ("/add")
-    public String addPatientForm(Model model,HttpSession session) {
+    public String addPatientForm(Model model) {
         model.addAttribute("patientForm", new PatientForm());
         logger.info("Processing patient's form...");
-        return "addpatient"; // returns the form to add a patient
+        return "addpatient";
     }
 
     @GetMapping("/{patientId}")
     public String getPatientDetails(@PathVariable String patientId, Model model) {
-        // patient with medical records
+        logger.info("Fetching patient details for ID: {}", patientId);
+
         Patient patient = patientService.findPatientWithMedicalRecords(patientId);
+        logger.info("Patient details fetched: {}", patient);
         if (patient == null) {
             logger.error("Patient with ID {} not found", patientId);
             throw new PatientNotFoundException("Patient with ID " + patientId + " not found.");
         }
 
-        List<Doctor> doctors = doctorService.getAllDoctors();
-        List<Doctor> assignedDoctors = patientService.getDoctorsForPatient(patientId);
-        List<MedicalRecord> medicalRecords = patient.getMedicalRecords(); // Fetch medical records
-
         model.addAttribute("patient", patient);
-        model.addAttribute("allDoctors", doctors);
-        model.addAttribute("assignedDoctors", assignedDoctors);
-        model.addAttribute("medicalRecords", medicalRecords); // Pass medical records
+        model.addAttribute("medicalRecords", patient.getMedicalRecords());
 
         return "patientDetails";
     }
-
 
     @RequestMapping("/delete/{patientId}")
     public String deletePatient(@PathVariable String patientId) {
@@ -101,13 +95,12 @@ public class PatientController {
                              Model model) {
         if (bindingResult.hasErrors()) {
             logger.warn("Validation errors occurred: {}", bindingResult.getAllErrors());
-            // Fetch doctors again in case of form errors
             List<Doctor> doctors = doctorService.getAllDoctors();
             model.addAttribute("doctors", doctors);
             return "addpatient";
         }
 
-        // Convert PatientForm to Patient entity
+
         Patient patient = new Patient();
         patient.setPatientId(patientForm.getPatientId());
         patient.setFirstName(patientForm.getFirstName());

@@ -35,7 +35,7 @@ public class Patient {
     @JoinColumn(name = "hospital_id", nullable = true)
     private Hospital hospital;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id")
     private User creator;
 

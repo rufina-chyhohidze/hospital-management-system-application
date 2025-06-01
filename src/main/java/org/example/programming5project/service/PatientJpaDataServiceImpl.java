@@ -11,7 +11,6 @@ import org.example.programming5project.repository.PatientJpaDataRepository;
 import org.example.programming5project.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -139,6 +138,12 @@ public class PatientJpaDataServiceImpl implements PatientService {
     public List<Patient> getPatientsCreatedByUser(Long userId) {
         return patientRepository.findByCreatorId(userId);
     }
+
+    @Override
+    public Optional<Patient> findPatientByIdWithCreator(String patientId) {
+        return patientRepository.findByIdWithCreator(patientId);
+    }
+
 
 
 }

@@ -5,8 +5,8 @@ Accept: application/json
 
 ### to delete a patient
 DELETE http://localhost:8080/api/patients/P005
-X-CSRF-TOKEN: uSqDzN48wGFpy-4qq1TEDreK_B5AvxmQtfPlg4ir3J2CLss1ixiz_-tYogVE_dkbk3nwOYe_0SZx2ny9jcHS5eyd7qSySK8H
-Cookie: JSESSIONID=FD9CF7E0FEBEDFA5C57DC160146D4D1C
+X-CSRF-TOKEN: vMxakidvqWF9fzdA4GZpgaI9ZYtovRr92w9QQBOW0L8BOHpGhfhsqxAKkARQTwVw0ktdsMEPSLMOjnzQvzdlcHX3441lXEwj
+Cookie: JSESSIONID=0681FAD1E2E3D259AC4913BDC7059A21
 //after running, run previous one and youll see that patient
 //with this id is deleted.
 
@@ -18,8 +18,8 @@ Accept: application/json
 ### to add patient
 POST http://localhost:8080/api/patients
 Content-Type: application/json
-X-CSRF-TOKEN: uSqDzN48wGFpy-4qq1TEDreK_B5AvxmQtfPlg4ir3J2CLss1ixiz_-tYogVE_dkbk3nwOYe_0SZx2ny9jcHS5eyd7qSySK8H
-Cookie: JSESSIONID=FD9CF7E0FEBEDFA5C57DC160146D4D1C
+X-CSRF-TOKEN: 9dfz42LjlbSBSd8eUGOW5JV7KYrEGCWWan_TteCFmgzhUg71zOPF2lWGrNGsee0uYk6i1fZJBLKiK0O7DkfmhYbkqT6FNjiQ
+Cookie: JSESSIONID=0681FAD1E2E3D259AC4913BDC7059A21
 
 
 {

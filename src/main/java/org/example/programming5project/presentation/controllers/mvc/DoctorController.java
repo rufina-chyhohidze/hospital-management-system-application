@@ -61,13 +61,16 @@ public class DoctorController {
                                    Model model,
                                    @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Doctor doctor = doctorService.findDoctorByLicenseNumber(doctorId);
+        logger.info("Fetching doctor details for ID: {}", doctorId);
         if (doctor == null) {
             logger.error("Doctor with ID {} not found", doctorId);
             throw new DoctorNotFoundException("Doctor with ID " + doctorId + " not found.");
         }
 
-
-        List<Patient> assignedPatients = patientService.getPatientsForDoctor(doctorId);
+        List<Patient> assignedPatients = doctor.getMedicalRecords().stream()
+                .map(MedicalRecord::getPatient)
+                .distinct()
+                .toList();
 
         List<Patient> allPatients = patientService.getPatientsCreatedByUser(userDetails.getUserId());
 
@@ -136,6 +139,7 @@ public class DoctorController {
 
     @PostMapping("/{doctorId}/assign-patient")
     public String assignPatientToDoctor(@PathVariable int doctorId, @RequestParam String patientId) {
+        logger.info("Assigning patient: {} to doctor: {}", patientId, doctorId);
         doctorService.assignPatientToDoctor(doctorId, patientId);
         return "redirect:/doctors/" + doctorId;
     }
@@ -143,7 +147,9 @@ public class DoctorController {
     @GetMapping("/search")
     public String searchDoctorByLicenseNumber(@RequestParam("licenseNumber") int licenseNumber, Model model) {
         // Fetch the doctor
+        logger.info("Searching for doctor with license number: {}", licenseNumber);
         Doctor doctor = doctorService.findDoctorByLicenseNumber(licenseNumber);
+        logger.info("Found doctor: {}", doctor);
         if (doctor == null) {
             model.addAttribute("errorMessage", "No doctor found with license number " + licenseNumber);
             return "error";

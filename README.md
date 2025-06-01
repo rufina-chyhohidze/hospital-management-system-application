@@ -56,6 +56,10 @@ npm install
 
 -  [Public Page (Hospitals)](http://localhost:8080/hospitals) – accessible by anyone
 -  [Patients Page](http://localhost:8080/patients) – requires login (ADMIN or USER)
+-  [Doctors Page](http://localhost:8080/patients) – requires login (ADMIN or USER)
+-  [Add doctor Page](http://localhost:8080/patients) – requires login (ADMIN)
+-  [Add patient Page](http://localhost:8080/patients) – requires login (ADMIN)
+-  [Add hospital Page](http://localhost:8080/patients) – requires login (ADMIN)
 
 ---
 
@@ -72,7 +76,8 @@ npm install
 
 
 ###  ADMIN (admin):
-- Can **view, add, edit, delete patients he created patients**.
+- Can **view, add, edit, delete patients he created**.
+- Can **assign patients to doctor, the ones he created**.
 - Can **access additional admin-only functionality**.
 - Can **delete doctors**
 ---
@@ -81,7 +86,8 @@ npm install
 
 - Pages like [Patients](http://localhost:8080/patients) are not accessible.
 - All `Edit` and `Delete` buttons are hidden unless the user is authenticated.
-- Delete button is hidden for unauthorized users
+- `Delete` button is hidden for unauthorized users
+- Assign patient is hidden for unauthorized users 
 ---
 
 ##  User Relations
@@ -101,8 +107,6 @@ https://gitlab.com/kdg-ti/programming-5/projects-24-25/acs202/rufina.chyhohidze/
 ### Project Setup & Build Instructions
 - Requires PostgreSQL database (configured via `docker-compose.yml`)
 - Check database credentials before running
-
-
 
 ##  API Examples
 
@@ -196,6 +200,27 @@ Cookie: JSESSIONID=<session_id>
 {
   "billingAmount": 5000,
   "admissionDate": "2025-03-01"
+}
+```
+
+### Get hospitals 
+```
+###
+GET http://localhost:8080/api/hospitals/1
+Accept: application/json
+```
+
+### Update hospital
+```
+
+###
+PATCH http://localhost:8080/api/hospitals/1
+Content-Type: application/json
+
+{
+  "hospitalName": "Rufina having fun",
+  "hospitalAddress": "Groenplaatsstraat12",
+  "establishedDate": "2010-02-01"
 }
 ```
 
