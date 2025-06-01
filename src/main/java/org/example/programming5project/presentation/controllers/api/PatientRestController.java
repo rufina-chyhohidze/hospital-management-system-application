@@ -19,6 +19,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -50,11 +51,18 @@ public class PatientRestController {
     @DeleteMapping("/{patientId}")
     public ResponseEntity<?> deletePatient(@PathVariable String patientId,
                                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        Patient patient = patientService.findPatientById(patientId);
+        Optional<Patient> patientOptional = patientService.findPatientByIdWithCreator(patientId);
+
+        if (patientOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        Patient patient = patientOptional.get();
 
         if (!patient.getCreator().getId().equals(userDetails.getUserId())) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only delete your own patients.");//403
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("You can only delete your own patients"); //403
         }
+
         logger.info("Deleting patient with ID: {}", patientId);
         patientService.removePatient(patientId);
         logger.info("Patient deleted successfully: {}", patientId);

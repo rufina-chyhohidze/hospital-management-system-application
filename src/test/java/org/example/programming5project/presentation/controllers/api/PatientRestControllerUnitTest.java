@@ -15,6 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -48,7 +49,7 @@ class PatientRestControllerUnitTest {
         var userDetails = mock(UserDetailsImpl.class);
         given(userDetails.getUserId()).willReturn(200L);
 
-        given(patientService.findPatientById("p123")).willReturn(patient);
+        given(patientService.findPatientByIdWithCreator("p123")).willReturn(Optional.of(patient));
 
         // Act
         var response = sut.deletePatient("p123", userDetails);
@@ -71,7 +72,7 @@ class PatientRestControllerUnitTest {
         var userDetails = mock(UserDetailsImpl.class);
         given(userDetails.getUserId()).willReturn(123L);
 
-        given(patientService.findPatientById("p123")).willReturn(patient);
+        given(patientService.findPatientByIdWithCreator("p123")).willReturn(Optional.of(patient));
 
         // Act
         var response = sut.deletePatient("p123", userDetails);
@@ -80,6 +81,7 @@ class PatientRestControllerUnitTest {
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         verify(patientService).removePatient("p123");
     }
+
 
     @Test
     void updateShouldReturnForbiddenIfUserIsNotOwner() {
@@ -94,7 +96,9 @@ class PatientRestControllerUnitTest {
         given(userDetails.getUserId()).willReturn(200L);
 
         var updateDto = new UpdatePatientDto(500.0, LocalDate.of(2025, 5, 30));
-        given(patientService.findPatientById("p123")).willReturn(patient);
+
+        given(patientService.findPatientByIdWithCreator("p123"))
+                .willReturn(Optional.of(patient));
 
         // Act
         var response = sut.updatePatient("p123", updateDto, userDetails);
@@ -103,6 +107,7 @@ class PatientRestControllerUnitTest {
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
         verify(patientService, never()).updatePatientDetails(anyString(), anyDouble(), any(LocalDate.class));
     }
+
     @Test
     void updateShouldReturnNoContentIfUpdateSucceeds() {
         // Arrange
@@ -117,7 +122,8 @@ class PatientRestControllerUnitTest {
 
         var updateDto = new UpdatePatientDto(300.0, LocalDate.of(2025, 7, 1));
 
-        given(patientService.findPatientById("p123")).willReturn(patient);
+        given(patientService.findPatientByIdWithCreator("p123")).willReturn(Optional.of(patient));
+
         given(patientService.updatePatientDetails("p123", 300.0, LocalDate.of(2025, 7, 1))).willReturn(true);
 
         // Act
@@ -142,7 +148,8 @@ class PatientRestControllerUnitTest {
 
         var updateDto = new UpdatePatientDto(250.0, LocalDate.of(2025, 6, 1));
 
-        given(patientService.findPatientById("p123")).willReturn(patient);
+        given(patientService.findPatientByIdWithCreator("p123")).willReturn(Optional.of(patient));
+
         given(patientService.updatePatientDetails("p123", 250.0, LocalDate.of(2025, 6, 1))).willReturn(false);
 
         // Act

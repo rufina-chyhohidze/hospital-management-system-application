@@ -56,8 +56,10 @@ public class PatientController {
             logger.error("Patient with ID {} not found", patientId);
             throw new PatientNotFoundException("Patient with ID " + patientId + " not found.");
         }
+        List<Doctor> assignedDoctors = patientService.getDoctorsForPatient(patientId);
 
         model.addAttribute("patient", patient);
+        model.addAttribute("assignedDoctors", assignedDoctors);
         model.addAttribute("medicalRecords", patient.getMedicalRecords());
 
         return "patientDetails";

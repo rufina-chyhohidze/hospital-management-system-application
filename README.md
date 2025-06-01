@@ -29,7 +29,16 @@ npm install
 ```bash
 ./gradlew bootRun
 ```
+- for test run
+```bash
+./gradlew test
+```
 
+- The following variables that are being used in .gitlab-ci.yml are encoded in gitlab variables and in my .env file for safety reasons, you can contact me and I can provide them to you if needed.
+- CI_DB_HOST_PORT
+- POSTGRES_PASSWORD
+- POSTGRES_USER
+- POSTGRES_DB
 
 ##  Main Entities
 - Hospital (One-to-Many with Doctors)
